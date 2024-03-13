@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+
+@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+  }
+}
+
+.scrollBox {
+  min-height: 30vh;
+  max-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #555;
+  border-radius: 0.5em;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.breakdownBox {
+  background: #fafafa;
+  border: 1px solid #eee;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.illustrationBox {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 0.5em;
+  padding: 1em;
+}
+
+.canvas {
+  width: 100%;
+  height: 2em;
+  margin-top: 0.3em;
+  transform: scaleY(-1);
+}

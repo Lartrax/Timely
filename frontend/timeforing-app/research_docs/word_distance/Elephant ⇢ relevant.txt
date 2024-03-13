@@ -1,0 +1,115 @@
+Elephant ⇢ relevant
+
+f = first
+s = second
+c = constructed
+--------------------------------------------
+x_______
+elephant
+relevant
+
+move "e" 1 index s[1] -> c[0]
+cost: 0.5
+
+f elephant
+s r levant
+c e
+--------------------------------------------
+_x______
+elephant
+r levant
+
+move "l" 1 index s[2] -> c[1]
+cost: 0.5
+
+f elephant
+s r  evant
+c el
+--------------------------------------------
+__x_____
+elephant
+r  evant
+
+move "e" 1 index s[3] -> c[2]
+cost: 0.5
+
+f elephant
+s r   vant
+c ele
+--------------------------------------------
+___x____
+elephant
+r   vant
+
+add "p" c[3]
+cost: 1
+
+f elephant
+s r   vant
+c elep
+--------------------------------------------
+____x___
+elephant
+r   vant
+
+add "h" c[4]
+cost: 1
+
+f elephant
+s r   vant
+c eleph
+--------------------------------------------
+_____x__
+elephant
+r   vant
+
+use "a" c[5]
+cost: 0
+
+f elephant
+s r   v nt
+c elepha
+--------------------------------------------
+______x_
+elephant
+r   v nt
+
+use "n" c[6]
+cost: 0
+
+f elephant
+s r   v  t
+c elephan
+--------------------------------------------
+_______x
+elephant
+r   v  t
+
+use "t" c[7]
+cost: 0
+
+f elephant
+s r   v   
+c elephant
+
+
+
+  _____x
+f google
+s fac b  k
+c google
+
+cost: 8
+
+
+  _______x
+f saturday
+s   n  y  
+c saturday
+
+cost: 7.5
+
+
+
+
+

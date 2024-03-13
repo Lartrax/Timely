@@ -1,0 +1,25 @@
+.url {
+    font-size: 1em;
+    text-decoration: none;
+    color: #fff;
+    user-select: none;
+    padding-left: 1em;
+    padding-bottom: 0.2em;
+    transition-duration: 200ms;
+    cursor: pointer;
+}
+
+.navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    background: #5af;
+    cursor: pointer;
+    transition-duration: 100ms;
+}
+
+.navbar:active {
+    background: #5afe;
+}

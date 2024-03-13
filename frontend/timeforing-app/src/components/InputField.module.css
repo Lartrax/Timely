@@ -1,0 +1,23 @@
+.input {
+    width: 100%;
+    align-self: center;
+    border: none;
+    border-radius: 0.5em;
+    padding: 1rem;
+    font-size: 1em;
+    background: #fafafa;
+}
+
+.input:focus {
+    outline: none;
+}
+
+.input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    height: 1em;
+    width: 1em;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' transform='rotate(45)'><rect fill='%23555' x='5' y='0' width='5%' height='100%'/><rect fill='%23555' x='0' y='5' width='100%' height='5%'/></svg>");
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}

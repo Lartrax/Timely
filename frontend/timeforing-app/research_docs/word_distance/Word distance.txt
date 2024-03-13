@@ -1,0 +1,95 @@
+Word distance
+
+
+apple
+
+
+grape
+
+
+
+Edits:
+
+* Move
+cost: 0.5 per index of movement
+
+apple
+grape
+
+apple[0] = a
+grape[2] = a
+
+* Add
+cost 1
+
+* Use
+cost 0
+
+
+f = first
+s = second
+c = constructed
+--------------------------------------------
+x____
+apple
+grape
+
+move "a" 2 indices s[2] -> c[0]
+cost: 1
+
+f apple
+s gr pe
+c a
+--------------------------------------------
+_x___
+apple
+gr pe
+
+move "p" 2 indices s[3] -> c[1]
+cost: 1
+
+f apple
+s gr  e
+c ap
+--------------------------------------------
+__x__
+apple
+gr  e
+
+add "p" c[2]
+cost: 1
+
+f apple
+s gr  e
+c app
+--------------------------------------------
+___x_
+apple
+gr  e
+
+add "l" c[3]
+cost: 1
+
+f apple
+s gr  e
+c appl
+--------------------------------------------
+____x
+apple
+grape
+
+use "e" c[4]
+cost: 0
+
+f apple
+s gr   
+c apple
+
+
+
+
+
+
+
+
+
