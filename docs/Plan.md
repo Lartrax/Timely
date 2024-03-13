@@ -59,3 +59,5 @@ Features:
 - Mulighet for å sette standard verdier i profil
 
 - Kalkulere tall for føring i agresso
+
+- Legge til timekoder i profil
