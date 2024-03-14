@@ -75,3 +75,17 @@ Databaser har jeg ikke jobbet mye med så tidsbruken der kan lett gå opp til 30
 [![](https://mermaid.ink/img/pako:eNo9kE9rwzAMxb9K0Dkrjmvnj2-DspHDYNDb8MWt1dQssYPjwLqQ7z4tI9NJ76enh9AC12ARFIwOs-RSj1lrEfuehJ0ucf7UPqPS8BKDT-ithkxlQu74-b3dyJHt5GSSuZgJN8z_8WsIHaWfXeefWr8NKQRyGDAOxlm6Yfn1akh3HGhbUWvxZuY-adB-JauZUzg__BVUijPmMI_WJDw500UzgLqZfiI6Gv8RwrCbSIJa4AtUIYtDc6yLWlZM8KZhZQ4PUFwQFkzKQpRc1iVfc_jeAtihYlVD1pKXohS1EDmgdSnEt7-vbc9bfwBjTV_B?type=png)](https://mermaid.live/edit#pako:eNo9kE9rwzAMxb9K0Dkrjmvnj2-DspHDYNDb8MWt1dQssYPjwLqQ7z4tI9NJ76enh9AC12ARFIwOs-RSj1lrEfuehJ0ucf7UPqPS8BKDT-ithkxlQu74-b3dyJHt5GSSuZgJN8z_8WsIHaWfXeefWr8NKQRyGDAOxlm6Yfn1akh3HGhbUWvxZuY-adB-JauZUzg__BVUijPmMI_WJDw500UzgLqZfiI6Gv8RwrCbSIJa4AtUIYtDc6yLWlZM8KZhZQ4PUFwQFkzKQpRc1iVfc_jeAtihYlVD1pKXohS1EDmgdSnEt7-vbc9bfwBjTV_B)
 
 [![](https://mermaid.ink/img/pako:eNo9kMFuhCAQhl-FzNlukEVUbk02bTw0abK3hgu7zLpEBYOYdGt891I3dk7M938MZBa4eoMgYbRIoo09kqbrkFiD2PeJmOkS5k45kkrBW_AuojMKiCTHYsevn81G2D856agvesKnSHf87n2bnjjb1r00bgvzFEIGA4ZBW5N-svzJCuIdh3RdpqPBm577qEC5Nal6jv78cFeQMcyYwTwaHfFkdRv0APKm-ynRUbsv74ddSi3IBb5B5kV-qI9VXhUl5ayuqcjgAZLxhDktipwLVlSCrRn8bAPooaRlnVTBBBe84jwDNDb68PHc3bbC9RfxQmG1?type=png)](https://mermaid.live/edit#pako:eNo9kMFuhCAQhl-FzNlukEVUbk02bTw0abK3hgu7zLpEBYOYdGt891I3dk7M938MZBa4eoMgYbRIoo09kqbrkFiD2PeJmOkS5k45kkrBW_AuojMKiCTHYsevn81G2D856agvesKnSHf87n2bnjjb1r00bgvzFEIGA4ZBW5N-svzJCuIdh3RdpqPBm577qEC5Nal6jv78cFeQMcyYwTwaHfFkdRv0APKm-ynRUbsv74ddSi3IBb5B5kV-qI9VXhUl5ayuqcjgAZLxhDktipwLVlSCrRn8bAPooaRlnVTBBBe84jwDNDb68PHc3bbC9RfxQmG1)
+
+---
+
+### Planen
+
+Jeg tenker å starte med å få Google Sign-In til å fungere og få ut en bruker token.
+
+Deretter gjør jeg klar en basic frontend og setter opp et enkelt api.
+
+Så starter jeg på å planlegge databasestrukturen og prøver å sette den opp.
+
+Så bygger jeg ut frontend og api til des jeg kan bruke token til å lagre og hente data ut av databasen.
+
+Så om alt fungerer så prioriteres appens features. Hvor jeg må designe alle sidene og sette opp tabeller i databasen for de forskjellige datatypene jeg vil trenge.
