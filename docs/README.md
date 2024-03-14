@@ -1,4 +1,4 @@
 # Dokumentasjon
 
-[Plan](docs/Plan.md)
+[Plan](Plan.md)
 
