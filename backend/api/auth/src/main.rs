@@ -1,6 +1,8 @@
 use ntex::{http, web};
 use ntex_cors::Cors;
-use oauth2::{basic::BasicClient, AuthUrl, ClientId, ClientSecret, CsrfToken, TokenUrl};
+use oauth2::{
+    basic::BasicClient, AuthUrl, ClientId, ClientSecret, CsrfToken, RedirectUrl, Scope, TokenUrl,
+};
 use serde::Serialize;
 
 #[derive(Serialize)]
@@ -26,8 +28,8 @@ struct RedirectResponse {
     url: String,
 }
 
-#[web::get("/generate_redirect")]
-async fn generate_redirect() -> impl web::Responder {
+#[web::get("/generate_redirect/{redirect_url}")]
+async fn generate_redirect(path: web::types::Path<String>) -> impl web::Responder {
     let client_id = ClientId::new(
         "***REMOVED***".to_string(),
     );
@@ -40,10 +42,20 @@ async fn generate_redirect() -> impl web::Responder {
     let token_url = TokenUrl::new("https://www.googleapis.com/oauth2/v3/token".to_string())
         .expect("Invalid token endpoint URL");
 
-    let client = BasicClient::new(client_id, Some(client_secret), auth_url, Some(token_url));
+    let redirect_url =
+        RedirectUrl::new(format!("https://{}", path.into_inner())).expect("Invalid redirect URL");
 
-    let (auth_url, csrf_token) = client
+    let client = BasicClient::new(client_id, Some(client_secret), auth_url, Some(token_url))
+        .set_redirect_uri(redirect_url);
+
+    let (auth_url, _csrf_token) = client
         .authorize_url(CsrfToken::new_random)
+        .add_scope(Scope::new(
+            "https://www.googleapis.com/auth/userinfo.email	".to_string(),
+        ))
+        .add_scope(Scope::new(
+            "https://www.googleapis.com/auth/userinfo.profile".to_string(),
+        ))
         .use_implicit_flow()
         .url();
 
