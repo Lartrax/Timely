@@ -1,4 +1,4 @@
-import { type Component } from "solid-js";
+import { onMount, type Component } from "solid-js";
 import { useNavigate } from "@solidjs/router";
 
 import styles from "./Home.module.css";
@@ -9,11 +9,18 @@ type redirect = {
   url: string;
 };
 
+type user = {
+  userId: string;
+  name: string;
+  email: string;
+  profilePicture: string;
+};
+
 const Home: Component = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    let currentUrl = window.location.host;
+    const currentUrl = window.location.host;
     logger(currentUrl);
     const response = await fetch(
       `https://auth.larserik.space/generate_redirect/${currentUrl}`,
@@ -29,6 +36,24 @@ const Home: Component = () => {
 
     window.location.href = url; // Redirect to Google OAuth URL
   };
+
+  onMount(async () => {
+    const url = window.location.href;
+    const access_token = url.split("access_token=")[1].split("&")[0];
+
+    if (access_token) {
+      logger("Access token: " + access_token);
+      const user = await fetch(
+        `https://auth.larserik.space/get_user/${access_token}`,
+        { method: "GET" }
+      )
+        .then((response) => response.text())
+        .then((user) => JSON.parse(user) as user);
+      logger("user:" + JSON.stringify(user));
+    } else {
+      logger("No access token");
+    }
+  });
 
   return (
     <div
@@ -49,6 +74,7 @@ const Home: Component = () => {
       <Button text="API GUI" onClick={() => navigate("/api-gui")} />
       <Button text="Login with Google" onClick={handleLogin} />
       <Button text="Sign Out" onClick={() => logger("signing out")} />
+      <Button text="Get url" onClick={() => logger(window.location.href)} />
     </div>
   );
 };
