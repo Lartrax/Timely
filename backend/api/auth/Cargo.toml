@@ -10,3 +10,4 @@ ntex = { version = "1.1", features = ["tokio"] }
 ntex-cors = "0.5.0"
 serde = { version = "1.0", features = ["derive"] }
 oauth2 = "4.0"
+google-oauth = "1.10.1"
