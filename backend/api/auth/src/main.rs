@@ -1,9 +1,10 @@
-use google_oauth::AsyncClient;
+use google_oauth::GoogleAccessTokenPayload;
 use ntex::{http, web};
 use ntex_cors::Cors;
 use oauth2::{
     basic::BasicClient, AuthUrl, ClientId, ClientSecret, CsrfToken, RedirectUrl, Scope, TokenUrl,
 };
+use reqwest::{Client, Error};
 use serde::Serialize;
 
 #[derive(Serialize)]
@@ -82,14 +83,7 @@ struct GetUserResponse {
 async fn get_user(path: web::types::Path<String>) -> impl web::Responder {
     let access_token = path.into_inner();
 
-    let client_id =
-        "301953730716-ilnc1ft7f935ut9na9l3i6muho53miv9.apps.googleusercontent.com".to_string();
-
-    let client = AsyncClient::new(client_id);
-
-    let payload = client.validate_access_token(access_token).await.unwrap();
-
-    println!("{:?}", payload);
+    let payload = authenticate_access_token(access_token).await.unwrap();
 
     let json_response = GetUserResponse {
         user_id: payload.sub,
@@ -101,6 +95,27 @@ async fn get_user(path: web::types::Path<String>) -> impl web::Responder {
     web::HttpResponse::Ok()
         .content_type("application/json")
         .json(&json_response)
+}
+
+async fn authenticate_access_token(
+    access_token: String,
+) -> Result<GoogleAccessTokenPayload, Error> {
+    let url = format!(
+        "https://www.googleapis.com/oauth2/v3/userinfo?access_token={}",
+        access_token
+    );
+    let client = Client::builder()
+        .danger_accept_invalid_certs(true)
+        .build()?;
+
+    let response = client
+        .get(&url)
+        .send()
+        .await?
+        .json::<GoogleAccessTokenPayload>()
+        .await?;
+
+    Ok(response)
 }
 
 #[ntex::main]
