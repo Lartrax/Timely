@@ -5,19 +5,29 @@ import styles from "./Home.module.css";
 import Button from "./components/Button";
 import { logger } from "./functions";
 
+type redirect = {
+  url: string;
+};
+
 const Home: Component = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    try {
-      const response = await fetch(
-        "https://database.larserik.space/hello/google"
-      );
-      const { url } = await response.json();
-      window.location.href = url; // Redirect to Google OAuth URL
-    } catch (error) {
-      console.error("Error logging in with Google:", error);
-    }
+    let currentUrl = window.location.host;
+    logger(currentUrl);
+    const response = await fetch(
+      `https://auth.larserik.space/generate_redirect/${currentUrl}`,
+      { method: "GET" }
+    )
+      .then((response) => response.text())
+      .then((response) => JSON.parse(response) as redirect);
+
+    logger(response.url);
+    logger(currentUrl);
+
+    const url = response.url;
+
+    window.location.href = url; // Redirect to Google OAuth URL
   };
 
   return (
