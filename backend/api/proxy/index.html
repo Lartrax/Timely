@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Redirect</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script>
+        const devUrl = "http://localhost:3000";
+        const prodUrl = "http://tauri.localhost";
+        let devFound = false;
+        const googleHash = window.location.hash;
+
+        fetch(devUrl, { signal: AbortSignal.timeout(100) })
+            .then((res) => {
+                if (res.ok) {
+                    // Redirect to dev app
+                    window.location.href = devUrl + googleHash;
+                    devFound = true;
+                }
+            })
+            .finally(() => {
+                // Dev app not found so redirect to prod app
+                if (!devFound) {
+                    window.location.href = prodUrl + googleHash;
+                }
+
+            })
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>
