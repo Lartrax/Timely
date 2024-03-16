@@ -45,7 +45,7 @@ async fn generate_redirect(path: web::types::Path<String>) -> impl web::Responde
         .expect("Invalid token endpoint URL");
 
     let redirect_url =
-        RedirectUrl::new(format!("http://{}", path.into_inner())).expect("Invalid redirect URL");
+        RedirectUrl::new(format!("https://{}", path.into_inner())).expect("Invalid redirect URL");
 
     let client = BasicClient::new(client_id, Some(client_secret), auth_url, Some(token_url))
         .set_redirect_uri(redirect_url);
