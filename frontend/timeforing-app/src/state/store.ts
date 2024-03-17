@@ -8,11 +8,20 @@ export type user = {
     profile_picture: string;
 };
 
+export enum page {
+    weekView,
+    workTimer,
+    export,
+    archive,
+    profile,
+}
+
 type store = {
     user: user | null;
+    page: page;
 }
 
 export const [appState, setAppState] = createStore<store>({
     user: null,
+    page: page.weekView
 })
-

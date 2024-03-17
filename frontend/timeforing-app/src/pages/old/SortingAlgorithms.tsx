@@ -1,8 +1,8 @@
 import { createSignal, type Component } from "solid-js";
 
 import styles from "./SortingAlgorithms.module.css";
-import Button from "../components/Button";
-import InputField from "../components/InputField";
+import Button from "../../components/Button";
+import InputField from "../../components/InputField";
 
 import { invoke } from "@tauri-apps/api/core";
 
