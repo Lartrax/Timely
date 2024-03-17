@@ -1,9 +1,6 @@
 import { type Component } from "solid-js";
 
 import styles from "./WeekView.module.css";
-import { appState } from "../../state/store"
-
-
 
 const WeekView: Component = () => {
   return (

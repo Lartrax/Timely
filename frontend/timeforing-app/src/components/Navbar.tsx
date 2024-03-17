@@ -11,27 +11,26 @@ const Navbar: Component = () => {
     if (appState.user) {
       switch (appState.page) {
         case page.weekView:
-          navigate("/week-view")
+          navigate("/week-view");
           break;
         case page.workTimer:
-          navigate("/work-timer")
+          navigate("/work-timer");
           break;
         case page.export:
-          navigate("/export")
+          navigate("/export");
           break;
         case page.archive:
-          navigate("/archive")
+          navigate("/archive");
           break;
         case page.profile:
-          navigate("/profile")
+          navigate("/profile");
           break;
         default:
-          navigate("week-view")
+          navigate("week-view");
           break;
       }
     }
-
-  })
+  });
 
   return (
     <div class={styles.navbar}>
@@ -39,50 +38,79 @@ const Navbar: Component = () => {
       <div
         class={styles.navbarItem}
         style={{
-          ...{ "font-size": "3em", "padding-bottom": "0.5rem", cursor: "pointer" },
-          ...appState.page === page.weekView && { "padding-bottom": "2.5rem" }
+          ...{
+            "font-size": "3em",
+            "padding-bottom": "0.5rem",
+            cursor: "pointer",
+          },
+          ...(appState.page === page.weekView && {
+            "padding-bottom": "2.5rem",
+          }),
         }}
-        onClick={() => setAppState({ page: page.weekView })}>
+        onClick={() => setAppState({ page: page.weekView })}
+      >
         📆
       </div>
       <span class={styles.divisor} />
       <div
         class={styles.navbarItem}
         style={{
-          ...{ "font-size": "3.5em", "padding-bottom": "0.5rem", cursor: "pointer" },
-          ...appState.page === page.workTimer && { "padding-bottom": "2.5rem" }
+          ...{
+            "font-size": "3.5em",
+            "padding-bottom": "0.5rem",
+            cursor: "pointer",
+          },
+          ...(appState.page === page.workTimer && {
+            "padding-bottom": "2.5rem",
+          }),
         }}
-        onClick={() => setAppState({ page: page.workTimer })}>
+        onClick={() => setAppState({ page: page.workTimer })}
+      >
         ⏱️
       </div>
       <span class={styles.divisor} />
       <div
         class={styles.navbarItem}
         style={{
-          ...{ "font-size": "3.5em", "padding-bottom": "0.5rem", cursor: "pointer" },
-          ...appState.page === page.export && { "padding-bottom": "2.5rem" }
+          ...{
+            "font-size": "3.5em",
+            "padding-bottom": "0.5rem",
+            cursor: "pointer",
+          },
+          ...(appState.page === page.export && { "padding-bottom": "2.5rem" }),
         }}
-        onClick={() => setAppState({ page: page.export })}>
+        onClick={() => setAppState({ page: page.export })}
+      >
         📤
       </div>
       <span class={styles.divisor} />
       <div
         class={styles.navbarItem}
         style={{
-          ...{ "font-size": "3.5em", "padding-bottom": "0.5rem", cursor: "pointer" },
-          ...appState.page === page.archive && { "padding-bottom": "2.5rem" }
+          ...{
+            "font-size": "3.5em",
+            "padding-bottom": "0.5rem",
+            cursor: "pointer",
+          },
+          ...(appState.page === page.archive && { "padding-bottom": "2.5rem" }),
         }}
-        onClick={() => setAppState({ page: page.archive })}>
+        onClick={() => setAppState({ page: page.archive })}
+      >
         🗃️
-      </div >
+      </div>
       <span class={styles.divisor} />
       <div
         class={styles.navbarItem}
         style={{
-          ...{ "font-size": "4rem", "padding-bottom": "2rem", cursor: "pointer" },
-          ...appState.page === page.profile && { "padding-bottom": "4rem" }
+          ...{
+            "font-size": "4rem",
+            "padding-bottom": "2rem",
+            cursor: "pointer",
+          },
+          ...(appState.page === page.profile && { "padding-bottom": "4rem" }),
         }}
-        onClick={() => setAppState({ page: page.profile })}>
+        onClick={() => setAppState({ page: page.profile })}
+      >
         🪪
       </div>
       <span class={styles.divisor} />

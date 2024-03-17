@@ -1,64 +1,66 @@
 @property --contrast {
-    syntax: "<color>";
-    inherits: false;
-    initial-value: #fafafa00;
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #fafafa00;
 }
 
 @property --p1 {
-    syntax: "<percentage>";
-    inherits: false;
-    initial-value: 20%;
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 20%;
 }
 
 @property --p2 {
-    syntax: "<percentage>";
-    inherits: false;
-    initial-value: 20%;
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 20%;
 }
 
 @property --p3 {
-    syntax: "<percentage>";
-    inherits: false;
-    initial-value: 80%;
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 80%;
 }
 
 @property --p4 {
-    syntax: "<percentage>";
-    inherits: false;
-    initial-value: 80%;
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 80%;
 }
 
 .button {
-    user-select: none;
-    cursor: pointer;
-    background: linear-gradient(90deg,
-            #fff var(--p1),
-            var(--contrast) var(--p2),
-            var(--contrast) var(--p3),
-            #fff var(--p4));
-    transition: --contrast 200ms, --p1 100ms, --p2 100ms, --p3 100ms, --p4 100ms;
-    border: #f5f5f5 1px solid;
-    text-decoration: none;
-    color: #222;
+  user-select: none;
+  cursor: pointer;
+  background: linear-gradient(
+    90deg,
+    #fff var(--p1),
+    var(--contrast) var(--p2),
+    var(--contrast) var(--p3),
+    #fff var(--p4)
+  );
+  transition: --contrast 200ms, --p1 100ms, --p2 100ms, --p3 100ms, --p4 100ms;
+  border: #f5f5f5 1px solid;
+  text-decoration: none;
+  color: #222;
 
-    height: 4vmax;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 4vmax;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .button:hover {
-    --contrast: #f8f8f8ff;
-    --p1: 10%;
-    --p2: 10%;
-    --p3: 90%;
-    --p4: 90%;
+  --contrast: #f8f8f8ff;
+  --p1: 10%;
+  --p2: 10%;
+  --p3: 90%;
+  --p4: 90%;
 }
 
 .button:active {
-    --contrast: #fafafaff;
-    --p1: 0%;
-    --p2: 0%;
-    --p3: 100%;
-    --p4: 100%;
+  --contrast: #fafafaff;
+  --p1: 0%;
+  --p2: 0%;
+  --p3: 100%;
+  --p4: 100%;
 }

@@ -1,9 +1,6 @@
 import { type Component } from "solid-js";
 
 import styles from "./Archive.module.css";
-import { appState } from "../../state/store"
-
-
 
 const Archive: Component = () => {
   return (

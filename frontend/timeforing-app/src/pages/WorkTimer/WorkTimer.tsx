@@ -1,9 +1,6 @@
 import { type Component } from "solid-js";
 
 import styles from "./WorkTimer.module.css";
-import { appState } from "../../state/store"
-
-
 
 const WorkTimer: Component = () => {
   return (

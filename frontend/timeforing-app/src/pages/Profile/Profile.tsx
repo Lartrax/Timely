@@ -1,9 +1,7 @@
 import { type Component } from "solid-js";
 
 import styles from "./Profile.module.css";
-import { appState } from "../../state/store"
-
-
+import { appState } from "../../state/store";
 
 const Profile: Component = () => {
   return (
