@@ -3,7 +3,7 @@ import { JSX, type Component } from "solid-js";
 import styles from "./Button.module.css";
 
 type buttonProps = {
-  text: string;
+  text: any;
   onClick?: () => void;
   style?: JSX.CSSProperties;
 };

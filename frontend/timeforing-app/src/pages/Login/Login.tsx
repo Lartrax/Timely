@@ -3,14 +3,13 @@ import { createEffect, onMount, type Component } from "solid-js";
 import styles from "./Login.module.css";
 import Button from "../../components/Button";
 import { logger } from "../../functions";
-import { appState, page, setAppState, type user } from "../../state/store"
+import { appState, page, setAppState, type user } from "../../state/store";
 
 type redirect = {
   url: string;
 };
 
 const Login: Component = () => {
-
   const handleLogin = async () => {
     const response = await fetch(
       `https://auth.larserik.space/generate_redirect/proxy.larserik.space`,
@@ -47,9 +46,9 @@ const Login: Component = () => {
 
   createEffect(() => {
     if (appState.user) {
-      setAppState({ page: page.profile })
+      setAppState({ page: page.profile });
     }
-  })
+  });
 
   return (
     <div
@@ -60,7 +59,20 @@ const Login: Component = () => {
         width: "30vmax",
       }}
     >
-      <Button text="Login with Google" onClick={handleLogin} />
+      <Button
+        text={
+          <>
+            Login with&nbsp;
+            <p style={{ color: "#4285f4" }}>G</p>
+            <p style={{ color: "#ea4335" }}>o</p>
+            <p style={{ color: "#fbbc05" }}>o</p>
+            <p style={{ color: "#4285f4" }}>g</p>
+            <p style={{ color: "#34a853" }}>l</p>
+            <p style={{ color: "#ea4335" }}>e</p>
+          </>
+        }
+        onClick={handleLogin}
+      />
     </div>
   );
 };
