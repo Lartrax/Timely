@@ -20,7 +20,7 @@ async fn generate_redirect(path: web::types::Path<String>) -> impl web::Responde
 
     let client_secret = ClientSecret::new("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".to_string());
 
-    let auth_url = AuthUrl::new("https://accounts.google.com/o/oauth2/v2/auth".to_string())
+    let auth_url = AuthUrl::new("https://accounts.google.com/o/oauth2/v3/auth".to_string())
         .expect("Invalid authorization endpoint URL");
 
     let token_url = TokenUrl::new("https://www.googleapis.com/oauth2/v3/token".to_string())
