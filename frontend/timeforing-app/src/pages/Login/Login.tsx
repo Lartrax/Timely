@@ -1,17 +1,15 @@
 import { createEffect, onMount, type Component } from "solid-js";
-import { useNavigate } from "@solidjs/router";
 
 import styles from "./Login.module.css";
-import Button from "../components/Button";
-import { logger } from "../functions";
-import { appState, setAppState, type user } from "../state/store"
+import Button from "../../components/Button";
+import { logger } from "../../functions";
+import { appState, page, setAppState, type user } from "../../state/store"
 
 type redirect = {
   url: string;
 };
 
 const Login: Component = () => {
-  const navigate = useNavigate();
 
   const handleLogin = async () => {
     const response = await fetch(
@@ -49,7 +47,7 @@ const Login: Component = () => {
 
   createEffect(() => {
     if (appState.user) {
-      navigate("/home")
+      setAppState({ page: page.profile })
     }
   })
 

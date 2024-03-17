@@ -1,11 +1,11 @@
 import { type Component } from "solid-js";
 
-import styles from "./Home.module.css";
-import { appState } from "../state/store"
+import styles from "./Profile.module.css";
+import { appState } from "../../state/store"
 
 
 
-const Home: Component = () => {
+const Profile: Component = () => {
   return (
     <div
       style={{
@@ -23,4 +23,4 @@ const Home: Component = () => {
   );
 };
 
-export default Home;
+export default Profile;

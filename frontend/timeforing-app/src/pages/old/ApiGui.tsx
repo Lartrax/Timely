@@ -1,8 +1,8 @@
 import { createSignal, type Component } from "solid-js";
 
 import styles from "./ApiGui.module.css";
-import InputField from "../components/InputField";
-import IconButton from "../components/IconButton";
+import InputField from "../../components/InputField";
+import IconButton from "../../components/IconButton";
 
 enum Method {
   Get = "GET",

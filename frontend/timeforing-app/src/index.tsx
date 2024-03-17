@@ -3,13 +3,14 @@ import { render } from "solid-js/web";
 import { Route, Router } from "@solidjs/router";
 
 import "./index.css";
-import Login from "./pages/Login";
-import WordDistance from "./pages/WordDistance";
+import Login from "./pages/Login/Login";
 import Navbar from "./components/Navbar";
-import PrimeNumbers from "./pages/PrimeNumbers";
-import SortingAlgorithms from "./pages/SortingAlgorithms";
-import ApiGui from "./pages/ApiGui";
-import Home from "./pages/Home";
+import Profile from "./pages/Profile/Profile";
+import { appState } from "./state/store";
+import WeekView from "./pages/WeekView/WeekView";
+import WorkTimer from "./pages/WorkTimer/WorkTimer";
+import Export from "./pages/Export/Export";
+import Archive from "./pages/Archive/Archive";
 
 const root = document.getElementById("root");
 
@@ -22,7 +23,7 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 const App = (props: any) => {
   return (
     <div>
-      <Navbar />
+      {appState.user && <Navbar />}
       {props.children}
     </div>
   );
@@ -32,11 +33,11 @@ render(
   () => (
     <Router root={App}>
       <Route path="/" component={Login} />
-      <Route path="/home" component={Home} />
-      <Route path="/word-distance" component={WordDistance} />
-      <Route path="/prime-numbers" component={PrimeNumbers} />
-      <Route path="/sorting-algorithms" component={SortingAlgorithms} />
-      <Route path="/api-gui" component={ApiGui} />
+      <Route path="/week-view" component={WeekView} />
+      <Route path="/work-timer" component={WorkTimer} />
+      <Route path="/export" component={Export} />
+      <Route path="/archive" component={Archive} />
+      <Route path="/profile" component={Profile} />
     </Router>
   ),
   root!

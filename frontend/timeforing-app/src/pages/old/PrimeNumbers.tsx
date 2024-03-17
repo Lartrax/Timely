@@ -1,9 +1,9 @@
 import { createSignal, type Component } from "solid-js";
 
 import styles from "./PrimeNumbers.module.css";
-import Button from "../components/Button";
-import IconButton from "../components/IconButton";
-import InputField from "../components/InputField";
+import Button from "../../components/Button";
+import IconButton from "../../components/IconButton";
+import InputField from "../../components/InputField";
 
 import { invoke } from "@tauri-apps/api/core";
 
