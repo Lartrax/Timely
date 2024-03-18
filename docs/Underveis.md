@@ -39,3 +39,5 @@ Etter helgen ser nå modellen slik ut:
 Brukeren er nå logget inn og applikasjonen har bruker id-en
 
 Begrunnelse for Proxy servicen er at Google ikke tillater redirects til webviews og må derfor gjennom en proxy før den kommer til appen
+
+Satte opp en PostgreSQL instans på GCP og fikk ikke til å koble meg på uansett hva jeg gjorde, viser seg at alt jeg måtte gjøre var å vente fem timer og prøve igjen.
