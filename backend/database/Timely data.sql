@@ -9,7 +9,7 @@ CREATE TABLE "users" (
   "id" integer PRIMARY KEY,
   "username" varchar,
   "email" varchar,
-  "created_at" timestamp
+  "created_at" timestamp default current_timestamp
 );
 
 CREATE TABLE "work_weeks" (
@@ -18,14 +18,14 @@ CREATE TABLE "work_weeks" (
   "year" integer,
   "work_week" JSONB,
   "user_id" integer,
-  "created_at" timestamp
+  "created_at" timestamp default current_timestamp
 );
 
 CREATE TABLE "preferences" (
   "start_end_hours" JSONB,
   "hour_codes" JSONB,
   "user_id" integer,
-  "created_at" timestamp
+  "created_at" timestamp default current_timestamp
 );
 
 COMMENT ON COLUMN "work_weeks"."work_week" IS '[ { code: 1234, desc: "Working hard", hours: 7.5 }, {... ]';
@@ -53,5 +53,6 @@ insert into users (id, username, email)
 	(769126, 'Lartrax', 'lartrax909@gmail.com'),
 	(981432, 'Lars Erik Nordbø', 'larsnor2304@gmail.com')
 ;
+
 
 
