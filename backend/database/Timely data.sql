@@ -1,3 +1,10 @@
+
+
+--UUID_v4
+create extension if not exists "uuid-ossp";
+select uuid_generate_v4();
+
+
 CREATE TABLE "users" (
   "id" integer PRIMARY KEY,
   "username" varchar,
@@ -6,7 +13,7 @@ CREATE TABLE "users" (
 );
 
 CREATE TABLE "work_weeks" (
-  "id" varchar PRIMARY KEY,
+  "id" text default uuid_generate_v4() PRIMARY KEY,
   "week" integer,
   "year" integer,
   "work_week" JSONB,
@@ -15,7 +22,6 @@ CREATE TABLE "work_weeks" (
 );
 
 CREATE TABLE "preferences" (
-  "id" varchar PRIMARY KEY,
   "start_end_hours" JSONB,
   "hour_codes" JSONB,
   "user_id" integer,
@@ -31,3 +37,21 @@ COMMENT ON COLUMN "preferences"."hour_codes" IS '[ { code: 1234, desc: "Working 
 ALTER TABLE "work_weeks" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 ALTER TABLE "preferences" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+
+
+select * from users;
+select * from work_weeks;
+select * from preferences;
+
+drop table work_weeks;
+drop table preferences;
+drop table users;
+
+
+insert into users (id, username, email)
+	values
+	(769126, 'Lartrax', 'lartrax909@gmail.com'),
+	(981432, 'Lars Erik Nordbø', 'larsnor2304@gmail.com')
+;
+
+
