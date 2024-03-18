@@ -63,12 +63,24 @@ const Login: Component = () => {
         text={
           <>
             Login with&nbsp;
-            <p style={{ color: "#4285f4" }}>G</p>
-            <p style={{ color: "#ea4335" }}>o</p>
-            <p style={{ color: "#fbbc05" }}>o</p>
-            <p style={{ color: "#4285f4" }}>g</p>
-            <p style={{ color: "#34a853" }}>l</p>
-            <p style={{ color: "#ea4335" }}>e</p>
+            <p class={styles.google} style={{ color: "#4285f4" }}>
+              G
+            </p>
+            <p class={styles.google} style={{ color: "#ea4335" }}>
+              o
+            </p>
+            <p class={styles.google} style={{ color: "#fbbc05" }}>
+              o
+            </p>
+            <p class={styles.google} style={{ color: "#4285f4" }}>
+              g
+            </p>
+            <p class={styles.google} style={{ color: "#34a853" }}>
+              l
+            </p>
+            <p class={styles.google} style={{ color: "#ea4335" }}>
+              e
+            </p>
           </>
         }
         onClick={handleLogin}
