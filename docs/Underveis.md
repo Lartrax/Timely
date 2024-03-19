@@ -47,3 +47,8 @@ Satte opp en PostgreSQL instans på GCP og fikk ikke til å koble meg på uanset
 Viser seg at jeg fortsatt ikke kan koble meg opp på databasen på jobb
 
 HK nettet blokkerer visst tcp/ip tilkoblinger så nå sitter jeg på gjestenett
+
+Diagram over databasestrukturen:
+
+![image](https://github.com/Lartrax/test-fagprove-1/assets/89910638/adb056aa-d66d-437f-9dd6-1e6d5a1f35f8)
+
