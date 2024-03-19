@@ -6,25 +6,25 @@ select uuid_generate_v4();
 
 
 CREATE TABLE "users" (
-  "id" integer PRIMARY KEY,
+  "id" varchar PRIMARY KEY,
   "username" varchar,
   "email" varchar,
   "created_at" timestamp default current_timestamp
 );
 
 CREATE TABLE "work_weeks" (
-  "id" text default uuid_generate_v4() PRIMARY KEY,
+  "id" varchar default uuid_generate_v4() PRIMARY KEY,
   "week" integer,
   "year" integer,
   "work_week" JSONB,
-  "user_id" integer,
+  "user_id" varchar,
   "created_at" timestamp default current_timestamp
 );
 
 CREATE TABLE "preferences" (
   "start_end_hours" JSONB,
   "hour_codes" JSONB,
-  "user_id" integer,
+  "user_id" varchar,
   "created_at" timestamp default current_timestamp
 );
 
@@ -50,9 +50,9 @@ drop table users;
 
 insert into users (id, username, email)
 	values
-	(769126, 'Lartrax', 'lartrax909@gmail.com'),
-	(981432, 'Lars Erik Nordbø', 'larsnor2304@gmail.com')
+	('114921769441012758740', 'Lartrax', 'lartrax909@gmail.com'),
+	('214923769435912758731', 'Lars Erik Nordbø', 'larsnor2304@gmail.com')
 ;
 
-
+delete from users where id in ('114921769441012758740', '214923769435912758731');
 
