@@ -22,6 +22,7 @@
   color: #fff;
   text-shadow: #0005 0px 0px 10px;
   height: 4em;
+  z-index: 999;
 }
 
 .divisor {

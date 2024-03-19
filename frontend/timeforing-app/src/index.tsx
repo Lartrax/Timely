@@ -21,6 +21,12 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 }
 
 const App = (props: any) => {
+  // If the user is not logged in, redirect to the login page,
+  // and if the pathname is not empty (contains google hash) redirect to the login page to finish authenticating
+  if (!appState.user && window.location.pathname !== "/") {
+    return <Login />;
+  }
+
   return (
     <div>
       {appState.user && <Navbar />}

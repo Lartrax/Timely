@@ -1,0 +1,27 @@
+.dropper {
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  padding: 1em;
+  border: 1px solid black;
+  z-index: 1;
+  user-select: none;
+}
+
+.dropDownItem {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  animation: fadeIn 200ms linear;
+  user-select: none;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: translateY(-20px);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
