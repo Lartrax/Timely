@@ -48,7 +48,7 @@ Viser seg at jeg fortsatt ikke kan koble meg opp på databasen på jobb
 
 HK nettet blokkerer visst tcp/ip tilkoblinger så nå sitter jeg på gjestenett
 
-Diagram over databasestrukturen:
+DBML:
 
-![image](https://github.com/Lartrax/test-fagprove-1/assets/89910638/adb056aa-d66d-437f-9dd6-1e6d5a1f35f8)
+![image](https://github.com/Lartrax/test-fagprove-1/assets/89910638/d70fe783-0450-4b1d-931c-1953637d4b75)
 
