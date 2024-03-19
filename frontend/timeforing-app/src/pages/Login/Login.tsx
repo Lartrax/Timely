@@ -18,8 +18,6 @@ const Login: Component = () => {
       .then((response) => response.text())
       .then((response) => JSON.parse(response) as redirect);
 
-    logger(response.url);
-
     const url = response.url;
 
     window.location.href = url; // Redirect to Google OAuth URL
@@ -30,7 +28,6 @@ const Login: Component = () => {
     const access_token = url.split("access_token=")[1].split("&")[0];
 
     if (access_token) {
-      logger("Access token: " + access_token);
       const user = await fetch(
         `https://auth.larserik.space/get_user/${access_token}`,
         { method: "GET" }
@@ -38,9 +35,6 @@ const Login: Component = () => {
         .then((response) => response.text())
         .then((user) => JSON.parse(user) as user);
       setAppState({ user: user });
-      logger("user:" + JSON.stringify(user));
-    } else {
-      logger("No access token");
     }
   });
 

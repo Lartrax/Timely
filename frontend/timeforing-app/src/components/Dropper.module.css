@@ -3,9 +3,11 @@
   justify-content: space-between;
   background: #fff;
   padding: 1em;
-  border: 1px solid black;
+  border-radius: 1em;
   z-index: 1;
   user-select: none;
+  border: #eee solid 1px;
+  box-shadow: #0002 0px 1px 3px 0px;
 }
 
 .dropDownItem {
@@ -14,6 +16,10 @@
   gap: 1em;
   animation: fadeIn 200ms linear;
   user-select: none;
+  border-radius: 1em;
+  border: #eee solid 1px;
+  padding: 1em;
+  box-shadow: #0002 0px 1px 3px 0px;
 }
 
 @keyframes fadeIn {
@@ -24,4 +30,20 @@
   to {
     transform: translateY(0);
   }
+}
+
+.list {
+  width: "auto";
+  align-self: center;
+  border: none;
+  border-radius: 0.5em;
+  padding: 1rem;
+  font-size: 1em;
+  background: #fafafa;
+  border: #eee solid 1px;
+  cursor: pointer;
+}
+
+.list:focus {
+  outline: none;
 }
