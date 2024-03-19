@@ -12,6 +12,8 @@ struct RedirectResponse {
     url: String,
 }
 
+// TODO: use .env for everything
+
 #[web::get("/generate_redirect/{redirect_url}")]
 async fn generate_redirect(path: web::types::Path<String>) -> impl web::Responder {
     let client_id = ClientId::new(
