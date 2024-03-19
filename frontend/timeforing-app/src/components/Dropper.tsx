@@ -1,16 +1,18 @@
-import { createEffect, createSignal, For, JSX, type Component } from "solid-js";
+import { createEffect, createSignal, For, type Component } from "solid-js";
 
 import styles from "./Dropper.module.css";
 import InputField from "./InputField";
-import { WorkDay } from "../state/store";
+import { appState, HourCode, WorkDay } from "../state/store";
 import { logger } from "../functions";
+import IconButton from "./IconButton";
 
 type dropperProps = {
   workDay: WorkDay;
+  saveDay: (day: WorkDay) => void;
 };
 
-const Dropper: Component<dropperProps> = ({ workDay }) => {
-  const [showing, setShowing] = createSignal(true);
+const Dropper: Component<dropperProps> = ({ workDay, saveDay }) => {
+  const [showing, setShowing] = createSignal(false);
 
   const [day, setDay] = createSignal<WorkDay>(workDay);
 
@@ -25,7 +27,10 @@ const Dropper: Component<dropperProps> = ({ workDay }) => {
   };
 
   createEffect(() => {
-    logger(day().codes);
+    if (JSON.stringify(workDay) !== JSON.stringify(day())) {
+      saveDay(day());
+      logger("dropper: " + JSON.stringify(day()));
+    }
   });
 
   return (
@@ -39,14 +44,40 @@ const Dropper: Component<dropperProps> = ({ workDay }) => {
           {day().codes.reduce((sum, c) => sum + c.hours, 0)}t /{" "}
           {getHours(day().start, day().end)}t
         </span>
-        <span>{showing() ? "▲" : "▼"}</span>
+        <span
+          style={{
+            "transition-duration": "200ms",
+            transform: showing() ? "rotateZ(-90deg)" : "rotateZ(0deg)",
+          }}
+        >
+          {day().codes.length > 0 ? "◀" : "◁"}
+        </span>
       </span>
       {showing() && (
         <div class={styles.dropDownItem}>
-          <div style={{ display: "flex", "justify-content": "space-between" }}>
+          <div
+            style={{
+              display: "flex",
+              "justify-content": "space-between",
+              "align-items": "flex-end",
+            }}
+          >
             <span style={{ "flex-grow": 1 }}>Timekode</span>
             <span style={{ "flex-grow": 1 }}>Beskrivelse</span>
             <span style={{ "flex-grow": 1 }}>Tidsbruk</span>
+            <IconButton
+              style={{ "font-size": "1em" }}
+              icon="➕"
+              onClick={() =>
+                setDay({
+                  ...day(),
+                  codes: [
+                    ...day().codes,
+                    { description: "Jobb", hours: 0 } as HourCode,
+                  ],
+                })
+              }
+            />
           </div>
           <For each={day().codes}>
             {(hourCode, i) => (
@@ -54,14 +85,13 @@ const Dropper: Component<dropperProps> = ({ workDay }) => {
                 style={{
                   display: "flex",
                   "flex-direction": "column",
-                  gap: "0.5em",
                 }}
               >
                 <div style={{ display: "flex", gap: "0.5em" }}>
-                  <InputField
-                    type="text"
+                  <select
+                    class={styles.list}
                     value={hourCode.code}
-                    onBlur={(e) =>
+                    onChange={(e) =>
                       setDay({
                         ...day(),
                         codes: day().codes.map((code) =>
@@ -71,8 +101,13 @@ const Dropper: Component<dropperProps> = ({ workDay }) => {
                         ),
                       })
                     }
-                    placeholder="Timekode"
-                  />
+                  >
+                    <For each={appState.preferences.timeCodes}>
+                      {(timeCode) => (
+                        <option value={timeCode}>{timeCode}</option>
+                      )}
+                    </For>
+                  </select>
                   <InputField
                     type="text"
                     value={hourCode.description}
@@ -86,7 +121,6 @@ const Dropper: Component<dropperProps> = ({ workDay }) => {
                         ),
                       })
                     }
-                    placeholder="Beskrivelse"
                   />
                   <InputField
                     type="number"
@@ -98,21 +132,52 @@ const Dropper: Component<dropperProps> = ({ workDay }) => {
                           code === hourCode
                             ? {
                                 ...code,
-                                hours: e.currentTarget.valueAsNumber,
+                                hours: e.currentTarget.valueAsNumber || 0,
                               }
                             : code
                         ),
                       })
                     }
-                    placeholder="Tidsbruk"
                     min={0}
                     max={getHours(day().start, day().end)}
-                    step={0.01}
+                    step={0.25}
+                  />
+                  <IconButton
+                    style={{ "font-size": "1em" }}
+                    icon="❌"
+                    onClick={() =>
+                      setDay({
+                        ...day(),
+                        codes: day().codes.filter((_, j) => j !== i()),
+                      })
+                    }
                   />
                 </div>
               </div>
             )}
           </For>
+          <span style={{ display: "flex", gap: "1em" }}>
+            <InputField
+              type="time"
+              value={day().start}
+              onBlur={(e) =>
+                setDay({
+                  ...day(),
+                  start: e.target.value,
+                })
+              }
+            />
+            <InputField
+              type="time"
+              value={day().end}
+              onBlur={(e) =>
+                setDay({
+                  ...day(),
+                  end: e.target.value,
+                })
+              }
+            />
+          </span>
         </div>
       )}
     </>

@@ -6,6 +6,7 @@
   padding: 1rem;
   font-size: 1em;
   background: #fafafa;
+  border: #eee solid 1px;
 }
 
 .input:focus {

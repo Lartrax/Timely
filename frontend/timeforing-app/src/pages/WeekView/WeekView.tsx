@@ -5,6 +5,8 @@ import { getWeek, getYear } from "date-fns";
 import InputField from "../../components/InputField";
 import Dropper from "../../components/Dropper";
 import { WorkWeek } from "../../state/store";
+import { logger } from "../../functions";
+import Button from "../../components/Button";
 
 const WeekView: Component = () => {
   const today = new Date();
@@ -95,10 +97,23 @@ const WeekView: Component = () => {
           style={{ display: "flex", "flex-direction": "column", gap: "1em" }}
         >
           <For each={workWeek()}>
-            {(workDay) => <Dropper workDay={workDay} />}
+            {(workDay) => (
+              <Dropper
+                workDay={workDay}
+                saveDay={(day) => {
+                  setWorkWeek({
+                    ...workWeek().map((workDay) =>
+                      day.day === workDay.day ? { ...day } : workDay
+                    ),
+                  });
+                  logger("week: " + JSON.stringify(workWeek()));
+                }}
+              />
+            )}
           </For>
         </div>
       </div>
+      <Button text="Lagre" onClick={() => logger("save")} />
     </div>
   );
 };
