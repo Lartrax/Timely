@@ -270,6 +270,7 @@ dependencies = [
  "ntex",
  "ntex-cors",
  "serde",
+ "serde_json",
  "sqlx",
 ]
 

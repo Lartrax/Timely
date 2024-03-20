@@ -1,0 +1,20 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT work_week  \n        FROM work_weeks \n        WHERE user_id = '{user_id}' \n        AND week_year = '{week}-{year}';",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "work_week",
+        "type_info": "Jsonb"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      true
+    ]
+  },
+  "hash": "ca8b01c6407a450d2347d588b012e2e6fca92fc84605c28c3437da838bfbb650"
+}
