@@ -2,15 +2,15 @@ import { createEffect, onMount, type Component } from "solid-js";
 
 import styles from "./Login.module.css";
 import Button from "../../components/Button";
-import { logger } from "../../functions";
 import {
   appState,
-  getCurrentWeekOrCreateNew,
+  getWeekOrCreateNew,
   getPreferences,
   page,
   setAppState,
   type user,
 } from "../../state/store";
+import { getWeek, getYear } from "date-fns";
 
 type redirect = {
   url: string;
@@ -53,10 +53,16 @@ const Login: Component = () => {
         .then((response) => response.text())
         .then((user) => JSON.parse(user) as user);
       setAppState({ user: user });
+      const today = new Date();
       setAppState({
-        activeWorkWeek: await getCurrentWeekOrCreateNew(),
-        preferences: await getPreferences(),
+        activeWorkWeek: await getWeekOrCreateNew(
+          getWeek(today) < 10
+            ? "0" + getWeek(today)
+            : getWeek(today).toString(),
+          getYear(today).toString()
+        ),
       });
+      setAppState({ preferences: await getPreferences() });
       createUser(user);
     }
   });
