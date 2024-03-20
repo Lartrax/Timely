@@ -1,25 +1,7 @@
 use ntex::{http, web};
 use ntex_cors::Cors;
 use serde::{Deserialize, Serialize};
-use sqlx::{postgres::PgPoolOptions, types::chrono::NaiveDateTime, FromRow, Pool, Postgres};
-
-#[derive(Serialize)]
-struct HelloWorldResponse {
-    greeting: String,
-}
-
-#[web::get("/hello/{world}")]
-async fn hello_world(path: web::types::Path<String>) -> impl web::Responder {
-    let recipient = path.into_inner();
-
-    let json_response = HelloWorldResponse {
-        greeting: format!("Hello {}!", recipient),
-    };
-
-    web::HttpResponse::Ok()
-        .content_type("application/json")
-        .json(&json_response)
-}
+use sqlx::{postgres::PgPoolOptions, FromRow, Pool, Postgres};
 
 async fn connect_pool() -> Pool<Postgres> {
     PgPoolOptions::new()
@@ -95,12 +77,12 @@ async fn save_work_week(
 
     let pool = connect_pool().await;
 
+    // Convert work_week to Json string
     let stringify = serde_json::to_string(&work_week.0);
-
     let stringified = match stringify {
         Ok(_) => stringify.unwrap(),
         Err(e) => {
-            return web::HttpResponse::BadRequest().body(format!("Database Err: {e}"));
+            return web::HttpResponse::BadRequest().body(format!("Json Err: {e}"));
         }
     };
 
@@ -149,41 +131,76 @@ async fn get_work_week(path: web::types::Path<(String, i32, i32)>) -> impl web::
     }
 }
 
-#[derive(Serialize)]
-struct GetUserByIdResponse {
-    username: String,
-    email: String,
+#[derive(Deserialize, Serialize)]
+struct StartEndTime {
+    start: String,
+    end: String,
+}
+#[derive(Deserialize, Serialize, FromRow)]
+struct Preferences {
+    start_end_time: sqlx::types::Json<Vec<StartEndTime>>,
+    time_codes: sqlx::types::Json<Vec<String>>,
 }
 
-#[allow(dead_code)]
-#[derive(FromRow)]
-struct User {
-    id: String,
-    username: String,
-    email: String,
-    created_at: NaiveDateTime,
-}
-
-#[web::get("/user/{user_id}")]
-async fn get_user_by_id(path: web::types::Path<String>) -> impl web::Responder {
+#[web::get("/preferences/{user_id}")]
+async fn get_preferences(path: web::types::Path<String>) -> impl web::Responder {
     let user_id = path.into_inner();
 
     let pool = connect_pool().await;
 
-    let user = sqlx::query_as::<_, User>("SELECT * FROM users WHERE id = $1")
-        .bind(user_id)
-        .fetch_one(&pool)
-        .await // TODO: handle and return error
-        .unwrap();
+    let preferences = sqlx::query_as::<_, Preferences>(&format!(
+        "SELECT start_end_time, time_codes 
+        FROM preferences 
+        WHERE user_id = '{user_id}';"
+    ))
+    .fetch_one(&pool)
+    .await;
 
-    let json_response = GetUserByIdResponse {
-        username: user.username,
-        email: user.email,
+    match preferences {
+        Ok(_) => web::HttpResponse::Ok().json(&preferences.unwrap()),
+        Err(e) => web::HttpResponse::BadRequest().body(format!("Database Err: {e}")),
+    }
+}
+
+#[web::post("/preferences/{user_id}")]
+async fn update_preferences(
+    path: web::types::Path<String>,
+    prefs: web::types::Json<Preferences>,
+) -> impl web::Responder {
+    let user_id = path.into_inner();
+
+    let pool = connect_pool().await;
+
+    // Convert start_end_time to Json string
+    let start_end_time = serde_json::to_string(&prefs.0.start_end_time);
+    let str_start_end_time = match start_end_time {
+        Ok(_) => start_end_time.unwrap(),
+        Err(e) => {
+            return web::HttpResponse::BadRequest().body(format!("Json Err: {e}"));
+        }
     };
 
-    web::HttpResponse::Ok()
-        .content_type("application/json")
-        .json(&json_response)
+    // Convert time_codes to Json string
+    let time_codes = serde_json::to_string(&prefs.0.time_codes);
+    let str_time_codes = match time_codes {
+        Ok(_) => time_codes.unwrap(),
+        Err(e) => {
+            return web::HttpResponse::BadRequest().body(format!("Json Err: {e}"));
+        }
+    };
+
+    let query = sqlx::query(&format!(
+        "insert into preferences (start_end_time , time_codes, user_id)
+        values   
+        ('{str_start_end_time}', '{str_time_codes}', {user_id});"
+    ))
+    .execute(&pool)
+    .await;
+
+    match query {
+        Ok(_) => web::HttpResponse::Ok().body("Preferences updated successfully".to_owned()),
+        Err(e) => web::HttpResponse::BadRequest().body(format!("Database Err: {e}")),
+    }
 }
 
 #[ntex::main]
@@ -198,11 +215,11 @@ async fn main() -> std::io::Result<()> {
                     .allowed_methods(vec!["GET", "POST"])
                     .finish(),
             )
-            .service(hello_world)
-            .service(get_user_by_id)
             .service(create_user)
             .service(save_work_week)
             .service(get_work_week)
+            .service(get_preferences)
+            .service(update_preferences)
     })
     .bind(("0.0.0.0", 8080))?
     .run()
