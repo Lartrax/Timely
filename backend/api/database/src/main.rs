@@ -192,7 +192,11 @@ async fn update_preferences(
     let query = sqlx::query(&format!(
         "insert into preferences (start_end_time , time_codes, user_id)
         values   
-        ('{str_start_end_time}', '{str_time_codes}', {user_id});"
+        ('{str_start_end_time}', '{str_time_codes}', {user_id})
+        on conflict (user_id)
+        do update set 
+            start_end_time = '{str_start_end_time}', 
+            time_codes = '{str_time_codes}';"
     ))
     .execute(&pool)
     .await;
