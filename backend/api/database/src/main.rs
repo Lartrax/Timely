@@ -66,19 +66,21 @@ async fn create_user(path: web::types::Path<(String, String, String)>) -> impl w
 struct HourCode {
     code: String,
     description: String,
-    hours: i32,
+    hours: f32,
 }
 
 #[derive(Deserialize, Serialize)]
 struct WorkDay {
     day: String,
     codes: Vec<HourCode>,
+    start: String,
+    end: String,
 }
 
 #[derive(Deserialize, Serialize)]
 struct WorkWeek {
-    week: i32,
-    year: i32,
+    week: String,
+    year: String,
     days: Vec<WorkDay>,
 }
 
@@ -88,8 +90,8 @@ async fn save_work_week(
     work_week: web::types::Json<WorkWeek>,
 ) -> impl web::Responder {
     let user_id = path.into_inner();
-    let week = work_week.week;
-    let year = work_week.year;
+    let week = &work_week.week;
+    let year = &work_week.year;
 
     let pool = connect_pool().await;
 
@@ -127,7 +129,7 @@ struct WorkWeekResponse {
 }
 
 #[web::get("/work/{user_id}/{week}/{year}")]
-async fn get_work_week(path: web::types::Path<(String, String, String)>) -> impl web::Responder {
+async fn get_work_week(path: web::types::Path<(String, i32, i32)>) -> impl web::Responder {
     let (user_id, week, year) = path.into_inner();
 
     let pool = connect_pool().await;
@@ -192,6 +194,7 @@ async fn main() -> std::io::Result<()> {
                 Cors::new()
                     .allowed_header(http::header::ACCESS_CONTROL_ALLOW_ORIGIN)
                     .allowed_header(http::header::CONTENT_TYPE)
+                    .allowed_header(http::header::ACCEPT)
                     .allowed_methods(vec!["GET", "POST"])
                     .finish(),
             )
