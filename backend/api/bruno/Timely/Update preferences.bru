@@ -1,0 +1,19 @@
+meta {
+  name: Update preferences
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/preferences/{{user_id]}
+  body: json
+  auth: none
+}
+
+body:json {
+  {"startEndTime":[{"start":"08:00","end":"15:30"},{"start":"08:00","end":"15:30"},{"start":"08:00","end":"15:30"},{"start":"08:00","end":"15:30"},{"start":"08:00","end":"15:30"},{"start":"08:00","end":"15:30"},{"start":"08:00","end":"15:30"}],"timeCodes":[]}
+}
+
+vars:pre-request {
+  user_id: "114921769441012758740"
+}

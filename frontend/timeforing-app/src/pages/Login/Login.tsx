@@ -6,6 +6,7 @@ import { logger } from "../../functions";
 import {
   appState,
   getCurrentWeekOrCreateNew,
+  getPreferences,
   page,
   setAppState,
   type user,
@@ -52,7 +53,10 @@ const Login: Component = () => {
         .then((response) => response.text())
         .then((user) => JSON.parse(user) as user);
       setAppState({ user: user });
-      setAppState({ activeWorkWeek: await getCurrentWeekOrCreateNew() });
+      setAppState({
+        activeWorkWeek: await getCurrentWeekOrCreateNew(),
+        preferences: await getPreferences(),
+      });
       createUser(user);
     }
   });
