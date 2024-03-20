@@ -2,11 +2,13 @@ import { createEffect, createSignal, For, type Component } from "solid-js";
 
 import styles from "./WeekView.module.css";
 import Dropper from "../../components/Dropper";
-import { appState, setAppState, WorkDay } from "../../state/store";
-import { logger } from "../../functions";
+import {
+  appState,
+  getWeekOrCreateNew,
+  setAppState,
+  WorkDay,
+} from "../../state/store";
 import Button from "../../components/Button";
-import { set } from "date-fns";
-import IconButton from "../../components/IconButton";
 import InputField from "../../components/InputField";
 
 const WeekView: Component = () => {
@@ -61,9 +63,10 @@ const WeekView: Component = () => {
         style={{ width: "30vmax" }}
         type="week"
         value={`${date().year}-W${date().week}`}
-        onChange={(e) => {
+        onChange={async (e) => {
           const [year, week] = e.target.value.split("-W");
           setDate({ week, year });
+          setWorkWeek((await getWeekOrCreateNew(week, year)).days);
         }}
       />
       <div
@@ -86,11 +89,11 @@ const WeekView: Component = () => {
               <Dropper
                 workDay={workDay}
                 saveDay={(day) => {
-                  setWorkWeek([
-                    ...workWeek().map((workDay) =>
+                  setWorkWeek(
+                    workWeek().map((workDay) =>
                       day.day === workDay.day ? { ...day } : workDay
-                    ),
-                  ]);
+                    )
+                  );
                 }}
               />
             )}

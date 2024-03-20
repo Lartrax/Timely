@@ -1,7 +1,6 @@
 import { createStore } from "solid-js/store";
 
 import { getWeek, getYear } from "date-fns";
-import { logger } from "../functions";
 
 export type user = {
   user_id: string;
@@ -18,15 +17,9 @@ export enum page {
   profile,
 }
 
-export type StartEndTime = [
-  { start: string; end: string },
-  { start: string; end: string },
-  { start: string; end: string },
-  { start: string; end: string },
-  { start: string; end: string },
-  { start: string; end: string },
-  { start: string; end: string }
-];
+export type StartEndTime = { start: string; end: string };
+
+
 
 export type HourCode = {
   code: string;
@@ -47,7 +40,7 @@ export type ActiveWorkWeek = {
   days: WorkDay[];
 };
 
-export type Preferences = { start_end_time: StartEndTime; time_codes: string[] };
+export type Preferences = { start_end_time: StartEndTime[]; time_codes: string[] };
 
 type store = {
   user: user | null;
@@ -59,8 +52,6 @@ type store = {
 const today = new Date();
 
 export const getPreferences = async (): Promise<Preferences> => {
-  // TODO: Try to get start and end-time from server
-
   const defaultPrefs: Preferences = {
     start_end_time: [
       { start: "08:00", end: "15:30" },
@@ -89,9 +80,7 @@ export const getPreferences = async (): Promise<Preferences> => {
     }
   });
   // If they are not found, use default
-  return (Preferences || {
-
-  });
+  return (Preferences || defaultPrefs);
 };
 
 export const updatePreferences = async (prefs: Preferences) => {
@@ -104,16 +93,18 @@ export const updatePreferences = async (prefs: Preferences) => {
   }).catch((e) => console.log(e));
 }
 
+export const days = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+
 const newWeekFromTemplate = async (): Promise<WorkDay[]> => {
-  const days = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
+
   const startEndTime = (await getPreferences()).start_end_time;
 
   let WorkDays: WorkDay[] = [];
@@ -130,9 +121,9 @@ const newWeekFromTemplate = async (): Promise<WorkDay[]> => {
   return WorkDays;
 };
 
-export const getCurrentWeekOrCreateNew = async (): Promise<ActiveWorkWeek> => {
+export const getWeekOrCreateNew = async (week: String, year: String): Promise<ActiveWorkWeek> => {
   const ActiveWorkWeek: ActiveWorkWeek = await fetch(
-    `https://database.larserik.space/work/${appState.user?.user_id}/${getWeek(today)}/${getYear(today)}`,
+    `https://database.larserik.space/work/${appState.user?.user_id}/${week}/${year}`,
     {
       method: "GET",
     }
