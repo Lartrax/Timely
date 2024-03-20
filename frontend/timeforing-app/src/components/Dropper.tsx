@@ -4,6 +4,7 @@ import styles from "./Dropper.module.css";
 import InputField from "./InputField";
 import { appState, HourCode, WorkDay } from "../state/store";
 import IconButton from "./IconButton";
+import { logger } from "../functions";
 
 type dropperProps = {
   workDay: WorkDay;
@@ -62,9 +63,9 @@ const Dropper: Component<dropperProps> = ({ workDay, saveDay }) => {
               "align-items": "flex-end",
             }}
           >
-            <span style={{ "flex-grow": 1 }}>Timekode</span>
-            <span style={{ "flex-grow": 1 }}>Beskrivelse</span>
-            <span style={{ "flex-grow": 1 }}>Tidsbruk</span>
+            <span style={{ "flex-grow": 1 }}>Code</span>
+            <span style={{ "flex-grow": 0.5 }}>Description</span>
+            <span style={{ "flex-grow": 1 }}>Time</span>
             <IconButton
               style={{ "font-size": "1em" }}
               icon="➕"
@@ -73,7 +74,7 @@ const Dropper: Component<dropperProps> = ({ workDay, saveDay }) => {
                   ...day(),
                   codes: [
                     ...day().codes,
-                    { code: "", description: "Jobb", hours: 0 } as HourCode,
+                    { code: "", description: "Work", hours: 0 } as HourCode,
                   ],
                 })
               }

@@ -42,10 +42,10 @@ export type WorkDay = {
 };
 
 export type ActiveWorkWeek = {
-  week: number;
-  year: number;
+  week: string;
+  year: string;
   days: WorkDay[];
-} | null;
+};
 
 type store = {
   user: user | null;
@@ -73,13 +73,13 @@ const getStartEndTime = (): StartEndTime => {
 
 const newWeekFromTemplate = (): WorkDay[] => {
   const days = [
-    "Mandag",
-    "Tirsdag",
-    "Onsdag",
-    "Torsdag",
-    "Fredag",
-    "Lørdag",
-    "Søndag",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
   ];
   const startEndTime = getStartEndTime();
 
@@ -97,9 +97,9 @@ const newWeekFromTemplate = (): WorkDay[] => {
   return WorkDays;
 };
 
-const getCurrentWeekOrCreateNew = async (): Promise<ActiveWorkWeek> => {
+export const getCurrentWeekOrCreateNew = async (): Promise<ActiveWorkWeek> => {
   const ActiveWorkWeek: ActiveWorkWeek = await fetch(
-    `https://database.larserik.space/work/${appState.user?.user_id}`,
+    `https://database.larserik.space/work/${appState.user?.user_id}/${getWeek(today)}/${getYear(today)}`,
     {
       method: "GET",
     }
@@ -125,20 +125,8 @@ export const [appState, setAppState] = createStore<store>({
   user: null,
   page: page.weekView,
   preferences: {
-    startEndTime: [
-      { start: "08:00", end: "15:30" },
-      { start: "08:00", end: "15:30" },
-      { start: "08:00", end: "15:30" },
-      { start: "08:00", end: "15:30" },
-      { start: "08:00", end: "15:30" },
-      { start: "08:00", end: "15:30" },
-      { start: "08:00", end: "15:30" },
-    ],
+    startEndTime: getStartEndTime(),
     timeCodes: ["60190-04", "60190-01"],
   },
-  activeWorkWeek: null,
+  activeWorkWeek: { week: getWeek(today) < 10 ? "0" + getWeek(today) : getWeek(today).toString(), year: getYear(today).toString(), days: [] },
 });
-
-if (appState.user) {
-  setAppState({ activeWorkWeek: await getCurrentWeekOrCreateNew() });
-}
