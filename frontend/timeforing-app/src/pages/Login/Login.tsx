@@ -3,7 +3,13 @@ import { createEffect, onMount, type Component } from "solid-js";
 import styles from "./Login.module.css";
 import Button from "../../components/Button";
 import { logger } from "../../functions";
-import { appState, page, setAppState, type user } from "../../state/store";
+import {
+  appState,
+  getCurrentWeekOrCreateNew,
+  page,
+  setAppState,
+  type user,
+} from "../../state/store";
 
 type redirect = {
   url: string;
@@ -23,6 +29,7 @@ const Login: Component = () => {
     window.location.href = url; // Redirect to Google OAuth URL
   };
 
+  // TODO: Move to api folder/file
   const createUser = (user: user) => {
     fetch(
       `https://database.larserik.space/user/${user.user_id}/${user.name}/${user.email}`,
@@ -32,6 +39,7 @@ const Login: Component = () => {
     );
   };
 
+  // Initialize user and current work week
   onMount(async () => {
     const url = window.location.href;
     const access_token = url.split("access_token=")[1].split("&")[0];
@@ -44,6 +52,7 @@ const Login: Component = () => {
         .then((response) => response.text())
         .then((user) => JSON.parse(user) as user);
       setAppState({ user: user });
+      setAppState({ activeWorkWeek: await getCurrentWeekOrCreateNew() });
       createUser(user);
     }
   });

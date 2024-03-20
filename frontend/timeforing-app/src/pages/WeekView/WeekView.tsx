@@ -6,14 +6,16 @@ import { appState, setAppState, WorkDay } from "../../state/store";
 import { logger } from "../../functions";
 import Button from "../../components/Button";
 import { set } from "date-fns";
+import IconButton from "../../components/IconButton";
+import InputField from "../../components/InputField";
 
 const WeekView: Component = () => {
   const [date, setDate] = createSignal({
     week: appState.activeWorkWeek?.week,
     year: appState.activeWorkWeek?.year,
   });
-  const [workWeek, setWorkWeek] = createSignal<WorkDay[] | null>(
-    appState.activeWorkWeek?.days || null
+  const [workWeek, setWorkWeek] = createSignal<WorkDay[]>(
+    appState.activeWorkWeek.days
   );
   const [updateFailed, setUpdateFailed] = createSignal(false);
 
@@ -39,17 +41,12 @@ const WeekView: Component = () => {
             days: workWeek(),
           },
         });
-        logger("Updated week: " + JSON.stringify(workWeek()));
       } else {
         // Failed
         setUpdateFailed(true);
       }
     });
   };
-
-  createEffect(() => {
-    logger("week: " + JSON.stringify(workWeek()));
-  });
 
   return (
     <div
@@ -60,10 +57,15 @@ const WeekView: Component = () => {
         width: "40vmax",
       }}
     >
-      <p>Tabell Timeføring</p>
-      <p>
-        Uke {date().week} {date().year}
-      </p>
+      <InputField
+        style={{ width: "30vmax" }}
+        type="week"
+        value={`${date().year}-W${date().week}`}
+        onChange={(e) => {
+          const [year, week] = e.target.value.split("-W");
+          setDate({ week, year });
+        }}
+      />
       <div
         style={{
           display: "flex",
@@ -73,7 +75,11 @@ const WeekView: Component = () => {
         }}
       >
         <div
-          style={{ display: "flex", "flex-direction": "column", gap: "1em" }}
+          style={{
+            display: "flex",
+            "flex-direction": "column",
+            gap: "1em",
+          }}
         >
           <For each={workWeek()}>
             {(workDay) => (
@@ -85,14 +91,14 @@ const WeekView: Component = () => {
                       day.day === workDay.day ? { ...day } : workDay
                     ),
                   ]);
-                  logger("week: " + JSON.stringify(workWeek()));
                 }}
               />
             )}
           </For>
         </div>
       </div>
-      <Button text="Lagre" onClick={() => saveWeek()} />
+      {updateFailed() && <p style={{ color: "#f00" }}>Failed to save</p>}
+      <Button text="Save" onClick={() => saveWeek()} />
     </div>
   );
 };

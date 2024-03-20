@@ -1,0 +1,19 @@
+meta {
+  name: Update work week
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/work/{{user_id}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {"week": 12, "year": 2024, "days": [{"day": "Mandag", "codes": [{"code": "blabla", "description": "test", "hours": 8}], "start": "08:00", "end": "15:30"}]}
+}
+
+vars:pre-request {
+  user_id: "114921769441012758740"
+}
