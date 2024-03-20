@@ -23,6 +23,15 @@ const Login: Component = () => {
     window.location.href = url; // Redirect to Google OAuth URL
   };
 
+  const createUser = (user: user) => {
+    fetch(
+      `https://database.larserik.space/user/${user.user_id}/${user.name}/${user.email}`,
+      {
+        method: "POST",
+      }
+    );
+  };
+
   onMount(async () => {
     const url = window.location.href;
     const access_token = url.split("access_token=")[1].split("&")[0];
@@ -35,6 +44,7 @@ const Login: Component = () => {
         .then((response) => response.text())
         .then((user) => JSON.parse(user) as user);
       setAppState({ user: user });
+      createUser(user);
     }
   });
 

@@ -1,5 +1,8 @@
 import { createStore } from "solid-js/store";
 
+import { getWeek, getYear } from "date-fns";
+import { logger } from "../functions";
+
 export type user = {
   user_id: string;
   name: string;
@@ -15,15 +18,15 @@ export enum page {
   profile,
 }
 
-export type StartEndTime = {
-  monday: { start: string; end: string };
-  tuesday: { start: string; end: string };
-  wednesday: { start: string; end: string };
-  thursday: { start: string; end: string };
-  friday: { start: string; end: string };
-  saturday: { start: string; end: string };
-  sunday: { start: string; end: string };
-};
+export type StartEndTime = [
+  { start: string; end: string },
+  { start: string; end: string },
+  { start: string; end: string },
+  { start: string; end: string },
+  { start: string; end: string },
+  { start: string; end: string },
+  { start: string; end: string }
+];
 
 export type HourCode = {
   code: string;
@@ -38,27 +41,104 @@ export type WorkDay = {
   end: string;
 };
 
-export type WorkWeek = WorkDay[];
+export type ActiveWorkWeek = {
+  week: number;
+  year: number;
+  days: WorkDay[];
+} | null;
 
 type store = {
   user: user | null;
   page: page;
   preferences: { startEndTime: StartEndTime; timeCodes: string[] };
+  activeWorkWeek: ActiveWorkWeek;
+};
+
+const today = new Date();
+
+const getStartEndTime = (): StartEndTime => {
+  // TODO: Try to get start and end-time from server
+
+  // If they are not found, use default
+  return [
+    { start: "08:00", end: "15:30" },
+    { start: "08:00", end: "15:30" },
+    { start: "08:00", end: "15:30" },
+    { start: "08:00", end: "15:30" },
+    { start: "08:00", end: "15:30" },
+    { start: "08:00", end: "15:30" },
+    { start: "08:00", end: "15:30" },
+  ];
+};
+
+const newWeekFromTemplate = (): WorkDay[] => {
+  const days = [
+    "Mandag",
+    "Tirsdag",
+    "Onsdag",
+    "Torsdag",
+    "Fredag",
+    "Lørdag",
+    "Søndag",
+  ];
+  const startEndTime = getStartEndTime();
+
+  let WorkDays: WorkDay[] = [];
+
+  startEndTime.forEach((time, i) => {
+    WorkDays.push({
+      day: days[i],
+      codes: [],
+      start: time.start,
+      end: time.end,
+    });
+  });
+
+  return WorkDays;
+};
+
+const getCurrentWeekOrCreateNew = async (): Promise<ActiveWorkWeek> => {
+  const ActiveWorkWeek: ActiveWorkWeek = await fetch(
+    `https://database.larserik.space/work/${appState.user?.user_id}`,
+    {
+      method: "GET",
+    }
+  ).then((res) => {
+    if (res.status === 200) {
+      // Success
+      return res.json();
+    } else {
+      // Failed
+      return null;
+    }
+  });
+  return (
+    ActiveWorkWeek || {
+      week: getWeek(today),
+      year: getYear(today),
+      days: newWeekFromTemplate(),
+    }
+  );
 };
 
 export const [appState, setAppState] = createStore<store>({
   user: null,
   page: page.weekView,
   preferences: {
-    startEndTime: {
-      monday: { start: "08:00", end: "15:30" },
-      tuesday: { start: "08:00", end: "15:30" },
-      wednesday: { start: "08:00", end: "15:30" },
-      thursday: { start: "08:00", end: "15:30" },
-      friday: { start: "08:00", end: "15:30" },
-      saturday: { start: "08:00", end: "15:30" },
-      sunday: { start: "08:00", end: "15:30" },
-    },
+    startEndTime: [
+      { start: "08:00", end: "15:30" },
+      { start: "08:00", end: "15:30" },
+      { start: "08:00", end: "15:30" },
+      { start: "08:00", end: "15:30" },
+      { start: "08:00", end: "15:30" },
+      { start: "08:00", end: "15:30" },
+      { start: "08:00", end: "15:30" },
+    ],
     timeCodes: ["60190-04", "60190-01"],
   },
+  activeWorkWeek: null,
 });
+
+if (appState.user) {
+  setAppState({ activeWorkWeek: await getCurrentWeekOrCreateNew() });
+}
