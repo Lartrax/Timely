@@ -103,7 +103,7 @@ const Dropper: Component<dropperProps> = ({ workDay, saveDay }) => {
                       })
                     }
                   >
-                    <For each={appState.preferences.timeCodes}>
+                    <For each={appState.preferences.time_codes}>
                       {(timeCode) => (
                         <option value={timeCode}>{timeCode}</option>
                       )}
