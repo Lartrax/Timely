@@ -1,76 +1,55 @@
-import { createSignal, For, type Component } from "solid-js";
+import { createEffect, createSignal, For, type Component } from "solid-js";
 
 import styles from "./WeekView.module.css";
-import { getWeek, getYear } from "date-fns";
-import InputField from "../../components/InputField";
 import Dropper from "../../components/Dropper";
-import { WorkWeek } from "../../state/store";
+import { appState, setAppState, WorkDay } from "../../state/store";
 import { logger } from "../../functions";
 import Button from "../../components/Button";
+import { set } from "date-fns";
 
 const WeekView: Component = () => {
-  const today = new Date();
-
   const [date, setDate] = createSignal({
-    week: getWeek(today),
-    year: getYear(today),
+    week: appState.activeWorkWeek?.week,
+    year: appState.activeWorkWeek?.year,
   });
+  const [workWeek, setWorkWeek] = createSignal<WorkDay[] | null>(
+    appState.activeWorkWeek?.days || null
+  );
+  const [updateFailed, setUpdateFailed] = createSignal(false);
 
-  const [workWeek, setWorkWeek] = createSignal<WorkWeek>([
-    {
-      day: "Mandag",
-      codes: [
-        {
-          code: "60190-04",
-          description: "Prøve",
-          hours: 4,
-        },
-        {
-          code: "60190-01",
-          description: "Rapport",
-          hours: 3.5,
-        },
-      ],
-      start: "08:00",
-      end: "15:30",
-    },
-    {
-      day: "Tirsdag",
-      codes: [],
-      start: "08:00",
-      end: "15:30",
-    },
-    {
-      day: "Onsdag",
-      codes: [],
-      start: "08:00",
-      end: "15:30",
-    },
-    {
-      day: "Torsdag",
-      codes: [],
-      start: "08:00",
-      end: "15:30",
-    },
-    {
-      day: "Fredag",
-      codes: [],
-      start: "08:00",
-      end: "15:30",
-    },
-    {
-      day: "Lørdag",
-      codes: [],
-      start: "08:00",
-      end: "15:30",
-    },
-    {
-      day: "Søndag",
-      codes: [],
-      start: "08:00",
-      end: "15:30",
-    },
-  ]);
+  const saveWeek = () => {
+    fetch(`https://database.larserik.space/work/${appState.user?.user_id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        week: date().week,
+        year: date().year,
+        days: workWeek(),
+      }),
+    }).then((res) => {
+      if (res.status === 200) {
+        // Success update local state
+        setUpdateFailed(false);
+        setAppState({
+          activeWorkWeek: {
+            week: date().week,
+            year: date().year,
+            days: workWeek(),
+          },
+        });
+        logger("Updated week: " + JSON.stringify(workWeek()));
+      } else {
+        // Failed
+        setUpdateFailed(true);
+      }
+    });
+  };
+
+  createEffect(() => {
+    logger("week: " + JSON.stringify(workWeek()));
+  });
 
   return (
     <div
@@ -101,11 +80,11 @@ const WeekView: Component = () => {
               <Dropper
                 workDay={workDay}
                 saveDay={(day) => {
-                  setWorkWeek({
+                  setWorkWeek([
                     ...workWeek().map((workDay) =>
                       day.day === workDay.day ? { ...day } : workDay
                     ),
-                  });
+                  ]);
                   logger("week: " + JSON.stringify(workWeek()));
                 }}
               />
@@ -113,7 +92,7 @@ const WeekView: Component = () => {
           </For>
         </div>
       </div>
-      <Button text="Lagre" onClick={() => logger("save")} />
+      <Button text="Lagre" onClick={() => saveWeek()} />
     </div>
   );
 };

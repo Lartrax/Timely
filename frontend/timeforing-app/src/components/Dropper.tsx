@@ -3,7 +3,6 @@ import { createEffect, createSignal, For, type Component } from "solid-js";
 import styles from "./Dropper.module.css";
 import InputField from "./InputField";
 import { appState, HourCode, WorkDay } from "../state/store";
-import { logger } from "../functions";
 import IconButton from "./IconButton";
 
 type dropperProps = {
@@ -26,13 +25,6 @@ const Dropper: Component<dropperProps> = ({ workDay, saveDay }) => {
     return Math.round((hours + minutes) * 100) / 100;
   };
 
-  createEffect(() => {
-    if (JSON.stringify(workDay) !== JSON.stringify(day())) {
-      saveDay(day());
-      logger("dropper: " + JSON.stringify(day()));
-    }
-  });
-
   return (
     <>
       <span class={styles.dropper} onClick={() => setShowing((prev) => !prev)}>
@@ -44,13 +36,21 @@ const Dropper: Component<dropperProps> = ({ workDay, saveDay }) => {
           {day().codes.reduce((sum, c) => sum + c.hours, 0)}t /{" "}
           {getHours(day().start, day().end)}t
         </span>
+        <IconButton
+          style={{ "font-size": "1em" }}
+          icon="💾"
+          onClick={() => saveDay(day())}
+        />
         <span
           style={{
             "transition-duration": "200ms",
             transform: showing() ? "rotateZ(-90deg)" : "rotateZ(0deg)",
           }}
         >
-          {day().codes.length > 0 ? "◀" : "◁"}
+          {day().codes.reduce((sum, c) => sum + c.hours, 0) ===
+          getHours(day().start, day().end)
+            ? "◀"
+            : "◁"}
         </span>
       </span>
       {showing() && (
@@ -73,7 +73,7 @@ const Dropper: Component<dropperProps> = ({ workDay, saveDay }) => {
                   ...day(),
                   codes: [
                     ...day().codes,
-                    { description: "Jobb", hours: 0 } as HourCode,
+                    { code: "", description: "Jobb", hours: 0 } as HourCode,
                   ],
                 })
               }
@@ -96,7 +96,7 @@ const Dropper: Component<dropperProps> = ({ workDay, saveDay }) => {
                         ...day(),
                         codes: day().codes.map((code) =>
                           code === hourCode
-                            ? { ...code, code: e.currentTarget.value }
+                            ? { ...code, code: e.currentTarget.value || "" }
                             : code
                         ),
                       })
@@ -116,7 +116,10 @@ const Dropper: Component<dropperProps> = ({ workDay, saveDay }) => {
                         ...day(),
                         codes: day().codes.map((code) =>
                           code === hourCode
-                            ? { ...code, description: e.currentTarget.value }
+                            ? {
+                                ...code,
+                                description: e.currentTarget.value || "",
+                              }
                             : code
                         ),
                       })
