@@ -47,6 +47,8 @@ drop table users;
 
 select start_end_hours, hour_codes from preferences where user_id = '114921769441012758740';
 
+select week_year from work_weeks;
+
 insert into preferences (start_end_hours , hour_codes, user_id)
 	values
 	('[]', '[]', '114921769441012758740')
