@@ -19,8 +19,6 @@ export enum page {
 
 export type StartEndTime = { start: string; end: string };
 
-
-
 export type HourCode = {
   code: string;
   description: string;
@@ -40,7 +38,10 @@ export type ActiveWorkWeek = {
   days: WorkDay[];
 };
 
-export type Preferences = { start_end_time: StartEndTime[]; time_codes: string[] };
+export type Preferences = {
+  start_end_time: StartEndTime[];
+  time_codes: string[];
+};
 
 type store = {
   user: user | null;
@@ -51,7 +52,11 @@ type store = {
 
 const today = new Date();
 
-export const getPreferences = async (): Promise<Preferences> => {
+export const getPreferences = async (
+  forceUser?: user
+): Promise<Preferences> => {
+  const userId = forceUser?.user_id || appState.user?.user_id;
+
   const defaultPrefs: Preferences = {
     start_end_time: [
       { start: "08:00", end: "15:30" },
@@ -65,7 +70,7 @@ export const getPreferences = async (): Promise<Preferences> => {
     time_codes: [],
   };
   const Preferences: Preferences = await fetch(
-    `https://database.larserik.space/preferences/${appState.user?.user_id}`,
+    `https://database.larserik.space/preferences/${userId}`,
     {
       method: "GET",
     }
@@ -80,18 +85,23 @@ export const getPreferences = async (): Promise<Preferences> => {
     }
   });
   // If they are not found, use default
-  return (Preferences || defaultPrefs);
+  return Preferences || defaultPrefs;
 };
 
-export const updatePreferences = async (prefs: Preferences) => {
-  fetch(`https://database.larserik.space/preferences/${appState.user?.user_id}`, {
+export const updatePreferences = async (
+  prefs: Preferences,
+  forceUser?: user
+) => {
+  const userId = forceUser?.user_id || appState.user?.user_id;
+
+  fetch(`https://database.larserik.space/preferences/${userId}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(prefs),
   }).catch((e) => console.log(e));
-}
+};
 
 export const days = [
   "Monday",
@@ -104,7 +114,6 @@ export const days = [
 ];
 
 const newWeekFromTemplate = async (): Promise<WorkDay[]> => {
-
   const startEndTime = (await getPreferences()).start_end_time;
 
   let WorkDays: WorkDay[] = [];
@@ -121,9 +130,15 @@ const newWeekFromTemplate = async (): Promise<WorkDay[]> => {
   return WorkDays;
 };
 
-export const getWeekOrCreateNew = async (week: String, year: String): Promise<ActiveWorkWeek> => {
+export const getWeekOrCreateNew = async (
+  week: number,
+  year: number,
+  forceUser?: user
+): Promise<ActiveWorkWeek> => {
+  const userId = forceUser?.user_id || appState.user?.user_id;
+
   const ActiveWorkWeek: ActiveWorkWeek = await fetch(
-    `https://database.larserik.space/work/${appState.user?.user_id}/${week}/${year}`,
+    `https://database.larserik.space/work/${userId}/${week}/${year}`,
     {
       method: "GET",
     }
@@ -138,9 +153,9 @@ export const getWeekOrCreateNew = async (week: String, year: String): Promise<Ac
   });
   return (
     ActiveWorkWeek || {
-      week: week,
-      year: year,
-      days: (await newWeekFromTemplate()),
+      week: week.toString(),
+      year: year.toString(),
+      days: await newWeekFromTemplate(),
     }
   );
 };
@@ -157,7 +172,12 @@ export const [appState, setAppState] = createStore<store>({
       { start: "08:00", end: "15:30" },
       { start: "08:00", end: "15:30" },
       { start: "08:00", end: "15:30" },
-    ], time_codes: []
+    ],
+    time_codes: [],
   },
-  activeWorkWeek: { week: getWeek(today) < 10 ? "0" + getWeek(today) : getWeek(today).toString(), year: getYear(today).toString(), days: [] },
+  activeWorkWeek: {
+    week: getWeek(today).toString(),
+    year: getYear(today).toString(),
+    days: [],
+  },
 });

@@ -52,17 +52,20 @@ const Login: Component = () => {
       )
         .then((response) => response.text())
         .then((user) => JSON.parse(user) as user);
+
       setAppState({ user: user });
+
       const today = new Date();
       setAppState({
         activeWorkWeek: await getWeekOrCreateNew(
-          getWeek(today) < 10
-            ? "0" + getWeek(today)
-            : getWeek(today).toString(),
-          getYear(today).toString()
+          getWeek(today),
+          getYear(today),
+          user
         ),
       });
-      setAppState({ preferences: await getPreferences() });
+
+      setAppState({ preferences: await getPreferences(user) });
+
       createUser(user);
     }
   });
