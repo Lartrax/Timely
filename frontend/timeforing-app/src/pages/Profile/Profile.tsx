@@ -102,7 +102,7 @@ const Profile: Component = () => {
       <span
         style={{ display: "flex", "flex-direction": "column", gap: "0.5em" }}
       >
-        <p style={{ "padding-bottom": "0.5em" }}>Start and end times</p>
+        <p style={{ "padding-bottom": "0.5em" }}>Working hours</p>
         <Button text="Save" onClick={() => updateStartEndTimes()} />
         <For each={startEndTimes()}>
           {(time, i) => (
