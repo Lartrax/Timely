@@ -27,4 +27,5 @@ Installation list
 * [Docker](https://docs.docker.com/engine/install)
 * [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
   * [Bun](https://bun.sh/docs/installation) `npm i -g bun`
+* [GCloud cli](https://cloud.google.com/sdk/docs/install)
 
