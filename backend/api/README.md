@@ -10,7 +10,7 @@ Auth api, Database api and Proxy are located here
 
 ## Getting started
 
-If you installed all requirements from the first readme then you only need make to run all commands. If you didn't [Go back]()
+If you installed all requirements from the first readme then you only need make to run all commands. If you didn't [Go back](/)
 
 ---
 
