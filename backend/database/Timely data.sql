@@ -20,17 +20,17 @@ CREATE TABLE "work_weeks" (
 );
 
 CREATE TABLE "preferences" (
-  "start_end_hours" JSONB,
-  "hour_codes" JSONB,
+  "start_end_time" JSONB,
+  "time_codes" JSONB,
   "user_id" varchar UNIQUE,
   "created_at" timestamp default current_timestamp
 );
 
 COMMENT ON COLUMN "work_weeks"."work_week" IS '[ { code: 1234, desc: "Working hard", hours: 7.5 }, {... ]';
 
-COMMENT ON COLUMN "preferences"."start_end_hours" IS '{ monday: { from: "08:00", to: "15:30" }, tue... }';
+COMMENT ON COLUMN "preferences"."start_end_time" IS '{ monday: { from: "08:00", to: "15:30" }, tue... }';
 
-COMMENT ON COLUMN "preferences"."hour_codes" IS '[ { code: 1234, desc: "Working hard" } ]';
+COMMENT ON COLUMN "preferences"."time_codes" IS '[ { code: 1234, desc: "Working hard" } ]';
 
 ALTER TABLE "work_weeks" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
@@ -45,11 +45,11 @@ drop table work_weeks;
 drop table preferences;
 drop table users;
 
-select start_end_hours, hour_codes from preferences where user_id = '114921769441012758740';
+select start_end_time, time_codes from preferences where user_id = '114921769441012758740';
 
 select week_year from work_weeks;
 
-insert into preferences (start_end_hours , hour_codes, user_id)
+insert into preferences (start_end_time , time_codes, user_id)
 	values
 	('[]', '[]', '114921769441012758740')
 ;
