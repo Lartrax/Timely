@@ -1,4 +1,4 @@
-import { createEffect, createSignal, For, type Component } from "solid-js";
+import { createSignal, For, type Component } from "solid-js";
 
 import styles from "./WeekView.module.css";
 import Dropper from "../../components/Dropper";
@@ -62,10 +62,14 @@ const WeekView: Component = () => {
       <InputField
         style={{ width: "30vmax" }}
         type="week"
-        value={`${date().year}-W${date().week}`}
+        value={`${date().year.toString()}-W${date()
+          .week.toString()
+          .padStart(2, "0")}`}
         onChange={async (e) => {
-          const [year, week] = e.target.value.split("-W");
-          setDate({ week, year });
+          const [stringYear, stringWeek] = e.target.value.split("-W");
+          const year = parseInt(stringYear);
+          const week = parseInt(stringWeek);
+          setDate({ week: stringWeek, year: stringYear });
           setWorkWeek((await getWeekOrCreateNew(week, year)).days);
         }}
       />

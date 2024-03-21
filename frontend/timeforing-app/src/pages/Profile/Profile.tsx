@@ -147,7 +147,7 @@ const Profile: Component = () => {
         </For>
       </span>
       <span style={{ display: "flex", "flex-direction": "column", gap: "1em" }}>
-        <p>Timecodes</p>
+        <p>Work codes</p>
         <span style={{ display: "flex", gap: "1em" }}>
           <Button
             style={{ "flex-grow": 1, "flex-basis": 0 }}

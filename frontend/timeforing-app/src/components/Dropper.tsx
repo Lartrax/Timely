@@ -1,10 +1,9 @@
-import { createEffect, createSignal, For, type Component } from "solid-js";
+import { createSignal, For, type Component } from "solid-js";
 
 import styles from "./Dropper.module.css";
 import InputField from "./InputField";
 import { appState, HourCode, WorkDay } from "../state/store";
 import IconButton from "./IconButton";
-import { logger } from "../functions";
 
 type dropperProps = {
   workDay: WorkDay;
@@ -34,8 +33,9 @@ const Dropper: Component<dropperProps> = ({ workDay, saveDay }) => {
           {day().start} - {day().end}
         </span>
         <span>
-          {day().codes.reduce((sum, c) => sum + c.hours, 0)}t /{" "}
-          {getHours(day().start, day().end)}t
+          {Math.round(day().codes.reduce((sum, c) => sum + c.hours, 0) * 100) /
+            100}
+          h / {getHours(day().start, day().end)}h
         </span>
         <IconButton
           style={{ "font-size": "1em" }}
