@@ -11,6 +11,7 @@ import {
   type user,
 } from "../../state/store";
 import { getWeek, getYear } from "date-fns";
+import icon from "../../assets/favicon.png";
 
 type redirect = {
   url: string;
@@ -83,9 +84,14 @@ const Login: Component = () => {
         "flex-direction": "column",
         gap: "2em",
         width: "30vmax",
+        height: "100vh",
+        "justify-content": "center",
+        "align-items": "center",
       }}
     >
+      <img class={styles.logo} src={icon} style={{ width: "40vmax" }} />
       <Button
+        style={{ width: "20vmax" }}
         text={
           <>
             Login with&nbsp;
