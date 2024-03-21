@@ -52,3 +52,14 @@ DBML:
 
 ![image](https://github.com/Lartrax/test-fagprove-1/assets/89910638/d70fe783-0450-4b1d-931c-1953637d4b75)
 
+### Onsdag
+
+Fokuserer på database apiet og forntend
+
+
+### Torsdag
+
+Fokuserer på å ferdigstille database apiet og frontend
+
+
+
