@@ -9,7 +9,7 @@ An applicaition for documenting work orders
 ---
 
 #### File structure
-* [Backend](/backend)
+* Backend
   * [Auth api](backend/api/auth)
   * [Database api](backend/api/database)
   * [Proxy service](backend/api/proxy)
