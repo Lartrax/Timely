@@ -1,15 +1,13 @@
-# redirect
+# Proxy service for redirecting to the app from Google login
 
-To install dependencies:
+## Getting started
 
-```bash
-bun install
-```
+[Go back](backend/api)
 
-To run:
+## Info
 
-```bash
-bun run index.ts
-```
+Why? Because Googel doesn't allow funky urls like `https://tauri.localhost` so we use a proxy to get out hands their hashes.
 
-This project was created using `bun init` in bun v1.0.31. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+This is a Bun web server with just some basic javascript to redirect requests and handle hashes
+
+The service takes out it's own hash and redirects to the app with the hash applied
