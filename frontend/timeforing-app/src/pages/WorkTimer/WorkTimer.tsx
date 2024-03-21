@@ -8,12 +8,7 @@ import {
 
 import styles from "./WorkTimer.module.css";
 import Button from "../../components/Button";
-import {
-  ActiveWorkWeek,
-  appState,
-  getWeekOrCreateNew,
-  setAppState,
-} from "../../state/store";
+import { appState, getWeekOrCreateNew, setAppState } from "../../state/store";
 import { getDay, getWeek, getYear } from "date-fns";
 import IconButton from "../../components/IconButton";
 
