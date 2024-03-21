@@ -16,9 +16,25 @@ If you installed all requirements from the first readme then you only need make 
 
 Start localhost:
 
-Auth/Database api: `make s` compile dev | `make sr` compile release
+Auth/Database api:
 
-Proxy: `make s`
+dev build
+
+```
+make s
+```
+
+release build
+
+```
+make sr
+```
+
+Proxy service:
+
+```
+make s
+```
 
 ---
 
