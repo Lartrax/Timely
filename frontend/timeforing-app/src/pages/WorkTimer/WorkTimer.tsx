@@ -23,7 +23,7 @@ const startWorkWeek = appState.user
   : { days: [] };
 
 const WorkTimer: Component = () => {
-  const [time, setTime] = createSignal(2000);
+  const [time, setTime] = createSignal(0);
   const [workWeek, setWorkWeek] = createSignal(startWorkWeek);
   const [workDay, setWorkDay] = createSignal(
     workWeek()?.days[getDay(today) - 1]
