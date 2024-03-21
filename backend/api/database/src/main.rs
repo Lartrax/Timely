@@ -111,7 +111,7 @@ struct WorkWeekResponse {
 }
 
 #[web::get("/work/{user_id}/{week}/{year}")]
-async fn get_work_week(path: web::types::Path<(String, i32, i32)>) -> impl web::Responder {
+async fn get_work_week(path: web::types::Path<(String, String, String)>) -> impl web::Responder {
     let (user_id, week, year) = path.into_inner();
 
     let pool = connect_pool().await;
