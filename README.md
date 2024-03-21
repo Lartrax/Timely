@@ -21,7 +21,7 @@ An applicaition for documenting work orders
 
 ## Getting started
 
-Installation list
+Install these if you feel like contributing
 * [Rust](https://www.rust-lang.org/tools/install)
   * [Tauri cli](https://beta.tauri.app/references/v2/cli) `cargo install tauri-cli --version "^2.0.0-beta"`
 * [Docker](https://docs.docker.com/engine/install)
