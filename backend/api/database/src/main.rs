@@ -131,6 +131,31 @@ async fn get_work_week(path: web::types::Path<(String, String, String)>) -> impl
     }
 }
 
+#[derive(Serialize, FromRow)]
+struct WorkWeeksResponse {
+    week_year: String,
+}
+
+#[web::get("/work/{user_id}")]
+async fn get_all_work_weeks(path: web::types::Path<String>) -> impl web::Responder {
+    let user_id = path.into_inner();
+
+    let pool = connect_pool().await;
+
+    let work_weeks = sqlx::query_as::<_, WorkWeeksResponse>(&format!(
+        "SELECT week_year  
+        FROM work_weeks 
+        WHERE user_id = '{user_id}';"
+    ))
+    .fetch_all(&pool)
+    .await;
+
+    match work_weeks {
+        Ok(_) => web::HttpResponse::Ok().json(&work_weeks.unwrap()),
+        Err(e) => web::HttpResponse::BadRequest().body(format!("Database Err: {e}")),
+    }
+}
+
 #[derive(Deserialize, Serialize)]
 struct StartEndTime {
     start: String,
@@ -224,6 +249,7 @@ async fn main() -> std::io::Result<()> {
             .service(get_work_week)
             .service(get_preferences)
             .service(update_preferences)
+            .service(get_all_work_weeks)
     })
     .bind(("0.0.0.0", 8080))?
     .run()
