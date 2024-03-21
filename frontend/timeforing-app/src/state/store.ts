@@ -138,9 +138,9 @@ export const getWeekOrCreateNew = async (week: String, year: String): Promise<Ac
   });
   return (
     ActiveWorkWeek || {
-      week: (getWeek(today) < 10 ? "0" + getWeek(today) : getWeek(today).toString()),
-      year: getYear(today).toString(),
-      days: newWeekFromTemplate(),
+      week: week,
+      year: year,
+      days: (await newWeekFromTemplate()),
     }
   );
 };
