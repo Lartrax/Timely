@@ -9,13 +9,13 @@ An applicaition for documenting work orders
 ---
 
 #### File structure
-* Backend
-  * Auth api
-  * Database api
-  * Proxy service
-  * Database
+* [Backend](/backend)
+  * [Auth api](backend/api/auth)
+  * [Database api](backend/api/database)
+  * [Proxy service](backend/api/proxy)
+  * [Database](backend/database)
 * Frontend
-  * Tauri/SolidJS app
+  * [Tauri/SolidJS app](frontend/timeforing-app)
 
 ---
 
