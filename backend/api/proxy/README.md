@@ -11,3 +11,7 @@ Why? Because Googel doesn't allow funky urls like `https://tauri.localhost` so w
 This is a Bun web server with just some basic javascript to redirect requests and handle hashes
 
 The service takes out it's own hash and redirects to the app with the hash applied
+
+### Endpoint
+
+Base url: `https://proxy.larserik.space`
