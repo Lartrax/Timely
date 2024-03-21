@@ -8,3 +8,26 @@
 .google {
   cursor: pointer;
 }
+
+.logo {
+  animation: fadeIn 1000ms ease;
+}
+
+@keyframes fadeIn {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  20% {
+    transform: scale(1.01);
+    opacity: 1;
+  }
+
+
+
+  100% {
+    transform: scale(1.0);
+    opacity: 1;
+  }
+}
