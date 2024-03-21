@@ -1,4 +1,4 @@
-![image](https://github.com/Lartrax/test-fagprove-1/assets/89910638/2a13f725-3b3c-42b3-81f8-e9f37254df27)# Thank you for choosing Timely for your hour keeping needs
+# Thank you for choosing Timely for your hour keeping needs
 
 ### Tutorial overview
 
