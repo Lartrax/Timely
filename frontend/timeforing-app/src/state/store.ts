@@ -48,6 +48,7 @@ type store = {
   page: page;
   preferences: Preferences;
   activeWorkWeek: ActiveWorkWeek;
+  timer: number;
 };
 
 const today = new Date();
@@ -180,4 +181,22 @@ export const [appState, setAppState] = createStore<store>({
     year: getYear(today).toString(),
     days: [],
   },
+  timer: 0,
 });
+
+
+let timer = 0;
+
+export const startTimer = () => {
+  timer = setInterval(() => {
+    setAppState("timer", (time) => time + 1);
+  }, 1000);
+};
+
+export const stopTimer = () => {
+  clearInterval(timer);
+};
+
+export const resetTimer = () => {
+  setAppState("timer", 0);
+};
