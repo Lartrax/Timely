@@ -8,7 +8,14 @@ import {
 
 import styles from "./WorkTimer.module.css";
 import Button from "../../components/Button";
-import { appState, getWeekOrCreateNew, setAppState } from "../../state/store";
+import {
+  appState,
+  getWeekOrCreateNew,
+  resetTimer,
+  setAppState,
+  startTimer,
+  stopTimer,
+} from "../../state/store";
 import { getDay, getWeek, getYear } from "date-fns";
 import IconButton from "../../components/IconButton";
 
@@ -18,7 +25,6 @@ const startWorkWeek = appState.user
   : { days: [] };
 
 const WorkTimer: Component = () => {
-  const [time, setTime] = createSignal(0);
   const [workWeek, setWorkWeek] = createSignal(startWorkWeek);
   const [workDay, setWorkDay] = createSignal(
     workWeek()?.days[getDay(today) - 1]
@@ -37,26 +43,14 @@ const WorkTimer: Component = () => {
     }
   });
 
-  let timer = 0;
-
-  const startTimer = () => {
-    timer = setInterval(() => {
-      setTime((prev) => prev + 1);
-    }, 1000);
-  };
-
-  const stopTimer = () => {
-    clearInterval(timer);
-  };
-
   const hours = createMemo(() => {
-    return Math.floor(time() / 60 / 60);
+    return Math.floor(appState.timer / 60 / 60);
   });
   const minutes = createMemo(() => {
-    return Math.floor(time() / 60) - hours() * 60;
+    return Math.floor(appState.timer / 60) - hours() * 60;
   });
   const seconds = createMemo(() => {
-    return Math.floor(time()) - hours() * 60 * 60 - minutes() * 60;
+    return Math.floor(appState.timer) - hours() * 60 * 60 - minutes() * 60;
   });
 
   const getHoursFromTimer = () => {
@@ -209,7 +203,7 @@ const WorkTimer: Component = () => {
                 <IconButton
                   style={{ "font-size": "1em" }}
                   icon="+ ⌛"
-                  onClick={() =>
+                  onClick={() => {
                     setWorkDay({
                       ...workDay(),
                       codes: workDay().codes.map((hourCode) =>
@@ -220,8 +214,9 @@ const WorkTimer: Component = () => {
                             }
                           : hourCode
                       ),
-                    })
-                  }
+                    });
+                    resetTimer();
+                  }}
                 />
               </div>
             )}
