@@ -17,15 +17,15 @@ struct RedirectResponse {
 #[web::get("/generate_redirect/{redirect_url}")]
 async fn generate_redirect(path: web::types::Path<String>) -> impl web::Responder {
     let client_id = ClientId::new(
-        "301953730716-ilnc1ft7f935ut9na9l3i6muho53miv9.apps.googleusercontent.com".to_string(),
+        "301953730716-ilnc1ft7f935ut9na9l3i6muho53miv9.apps.googleusercontent.com".to_owned(),
     );
 
-    let client_secret = ClientSecret::new("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".to_string());
+    let client_secret = ClientSecret::new("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".to_owned());
 
-    let auth_url = AuthUrl::new("https://accounts.google.com/o/oauth2/v3/auth".to_string())
+    let auth_url = AuthUrl::new("https://accounts.google.com/o/oauth2/v2/auth".to_owned())
         .expect("Invalid authorization endpoint URL");
 
-    let token_url = TokenUrl::new("https://www.googleapis.com/oauth2/v3/token".to_string())
+    let token_url = TokenUrl::new("https://www.googleapis.com/oauth2/v3/token".to_owned())
         .expect("Invalid token endpoint URL");
 
     let redirect_url =
@@ -37,17 +37,17 @@ async fn generate_redirect(path: web::types::Path<String>) -> impl web::Responde
     let (auth_url, _csrf_token) = client
         .authorize_url(CsrfToken::new_random)
         .add_scope(Scope::new(
-            "openid https://www.googleapis.com/auth/userinfo.email".to_string(),
+            "openid https://www.googleapis.com/auth/userinfo.email".to_owned(),
         ))
         .add_scope(Scope::new(
-            "openid https://www.googleapis.com/auth/userinfo.profile".to_string(),
+            "openid https://www.googleapis.com/auth/userinfo.profile".to_owned(),
         ))
-        .add_scope(Scope::new("openid".to_string()))
+        .add_scope(Scope::new("openid".to_owned()))
         .use_implicit_flow()
         .url();
 
     let json_response = RedirectResponse {
-        url: format!("{}", auth_url),
+        url: auth_url.to_string(),
     };
 
     web::HttpResponse::Ok()
@@ -67,13 +67,21 @@ struct GetUserResponse {
 async fn get_user(path: web::types::Path<String>) -> impl web::Responder {
     let access_token = path.into_inner();
 
-    let payload = authenticate_access_token(access_token).await.unwrap();
+    let payload = authenticate_access_token(access_token).await;
+
+    let user = match payload {
+        Ok(_) => payload.unwrap(),
+        Err(e) => {
+            return web::HttpResponse::BadRequest()
+                .body(format!("Authenticate access_token Err: {e}"))
+        }
+    };
 
     let json_response = GetUserResponse {
-        user_id: payload.sub,
-        name: payload.name.expect("User is missing name"),
-        email: payload.email.expect("User is missing email"),
-        profile_picture: payload.picture.expect("User is missing profile picture"),
+        user_id: user.sub,
+        name: user.name.expect("User is missing name"),
+        email: user.email.expect("User is missing email"),
+        profile_picture: user.picture.expect("User is missing profile picture"),
     };
 
     web::HttpResponse::Ok()
@@ -88,9 +96,7 @@ async fn authenticate_access_token(
         "https://www.googleapis.com/oauth2/v3/userinfo?access_token={}",
         access_token
     );
-    let client = Client::builder()
-        .danger_accept_invalid_certs(true)
-        .build()?;
+    let client = Client::builder().use_rustls_tls().build()?;
 
     let response = client
         .get(&url)
