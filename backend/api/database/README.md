@@ -2,7 +2,7 @@
 
 ## Getting started
 
-[Go back](backend/api)
+[Go back](../)
 
 ## Info
 
