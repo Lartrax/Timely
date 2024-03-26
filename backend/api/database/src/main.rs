@@ -1,22 +1,17 @@
-use ntex::{http, web};
+use ntex::{
+    http,
+    web::{self, types::State},
+};
 use ntex_cors::Cors;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgPoolOptions, FromRow, Pool, Postgres};
 
-async fn connect_pool() -> Pool<Postgres> {
-    PgPoolOptions::new()
-        .max_connections(5)
-        // TODO: Move url to .env
-        .connect("***REMOVED***")
-        .await // TODO: handle and return error
-        .unwrap()
-}
-
 #[web::post("/user/{user_id}/{username}/{email}")]
-async fn create_user(path: web::types::Path<(String, String, String)>) -> impl web::Responder {
+async fn create_user(
+    path: web::types::Path<(String, String, String)>,
+    pool: State<Pool<Postgres>>,
+) -> impl web::Responder {
     let (user_id, username, email) = path.into_inner();
-
-    let pool = connect_pool().await;
 
     let query = sqlx::query(&format!(
         "
@@ -35,7 +30,7 @@ async fn create_user(path: web::types::Path<(String, String, String)>) -> impl w
     $$
     "
     ))
-    .execute(&pool)
+    .execute(&*pool)
     .await;
 
     match query {
@@ -70,12 +65,11 @@ struct WorkWeek {
 async fn save_work_week(
     path: web::types::Path<String>,
     work_week: web::types::Json<WorkWeek>,
+    pool: State<Pool<Postgres>>,
 ) -> impl web::Responder {
     let user_id = path.into_inner();
     let week = &work_week.week;
     let year = &work_week.year;
-
-    let pool = connect_pool().await;
 
     // Convert work_week to Json string
     let stringify = serde_json::to_string(&work_week.0);
@@ -96,7 +90,7 @@ async fn save_work_week(
             work_week = '{stringified}', 
             user_id = '{user_id}';"
     ))
-    .execute(&pool)
+    .execute(&*pool)
     .await;
 
     match query {
@@ -111,10 +105,11 @@ struct WorkWeekResponse {
 }
 
 #[web::get("/work/{user_id}/{week}/{year}")]
-async fn get_work_week(path: web::types::Path<(String, String, String)>) -> impl web::Responder {
+async fn get_work_week(
+    path: web::types::Path<(String, String, String)>,
+    pool: State<Pool<Postgres>>,
+) -> impl web::Responder {
     let (user_id, week, year) = path.into_inner();
-
-    let pool = connect_pool().await;
 
     let work_week = sqlx::query_as::<_, WorkWeekResponse>(&format!(
         "SELECT work_week  
@@ -122,7 +117,7 @@ async fn get_work_week(path: web::types::Path<(String, String, String)>) -> impl
         WHERE user_id = '{user_id}' 
         AND week_year = '{week}-{year}';"
     ))
-    .fetch_one(&pool)
+    .fetch_one(&*pool)
     .await;
 
     match work_week {
@@ -137,17 +132,19 @@ struct WorkWeeksResponse {
 }
 
 #[web::get("/work/{user_id}")]
-async fn get_all_work_weeks(path: web::types::Path<String>) -> impl web::Responder {
+async fn get_all_work_weeks(
+    path: web::types::Path<String>,
+    pool: State<Pool<Postgres>>,
+) -> impl web::Responder {
     let user_id = path.into_inner();
-
-    let pool = connect_pool().await;
 
     let work_weeks = sqlx::query_as::<_, WorkWeeksResponse>(&format!(
         "SELECT week_year  
         FROM work_weeks 
-        WHERE user_id = '{user_id}';"
+        WHERE user_id = '{user_id}'
+        ORDER BY week_year;"
     ))
-    .fetch_all(&pool)
+    .fetch_all(&*pool)
     .await;
 
     match work_weeks {
@@ -168,17 +165,18 @@ struct Preferences {
 }
 
 #[web::get("/preferences/{user_id}")]
-async fn get_preferences(path: web::types::Path<String>) -> impl web::Responder {
+async fn get_preferences(
+    path: web::types::Path<String>,
+    pool: State<Pool<Postgres>>,
+) -> impl web::Responder {
     let user_id = path.into_inner();
-
-    let pool = connect_pool().await;
 
     let preferences = sqlx::query_as::<_, Preferences>(&format!(
         "SELECT start_end_time, time_codes 
         FROM preferences 
         WHERE user_id = '{user_id}';"
     ))
-    .fetch_one(&pool)
+    .fetch_one(&*pool)
     .await;
 
     match preferences {
@@ -191,10 +189,9 @@ async fn get_preferences(path: web::types::Path<String>) -> impl web::Responder 
 async fn update_preferences(
     path: web::types::Path<String>,
     prefs: web::types::Json<Preferences>,
+    pool: State<Pool<Postgres>>,
 ) -> impl web::Responder {
     let user_id = path.into_inner();
-
-    let pool = connect_pool().await;
 
     // Convert start_end_time to Json string
     let start_end_time = serde_json::to_string(&prefs.0.start_end_time);
@@ -223,7 +220,7 @@ async fn update_preferences(
             start_end_time = '{str_start_end_time}', 
             time_codes = '{str_time_codes}';"
     ))
-    .execute(&pool)
+    .execute(&*pool)
     .await;
 
     match query {
@@ -234,7 +231,18 @@ async fn update_preferences(
 
 #[ntex::main]
 async fn main() -> std::io::Result<()> {
-    web::HttpServer::new(|| {
+    let connect = PgPoolOptions::new()
+        .max_connections(5)
+        // TODO: Move url to .env
+        .connect("***REMOVED***")
+        .await;
+
+    let pool = match connect {
+        Ok(_) => connect.unwrap(),
+        Err(e) => panic!("Unable to connect to database: {e}"),
+    };
+
+    web::HttpServer::new(move || {
         web::App::new()
             .wrap(
                 Cors::new()
@@ -244,6 +252,7 @@ async fn main() -> std::io::Result<()> {
                     .allowed_methods(vec!["GET", "POST"])
                     .finish(),
             )
+            .state(pool.clone())
             .service(create_user)
             .service(save_work_week)
             .service(get_work_week)
