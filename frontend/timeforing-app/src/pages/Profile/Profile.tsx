@@ -113,7 +113,7 @@ const Profile: Component = () => {
                 "align-items": "center",
               }}
             >
-              <p>{days[i()].replace("day", "")}</p>
+              <p>{days[i()].slice(0, 3)}</p>
               <span style={{ display: "flex", gap: "1em" }}>
                 <InputField
                   type="time"
