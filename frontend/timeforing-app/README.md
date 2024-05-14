@@ -36,6 +36,6 @@ Frontend code is located in `src`.
 
 The app is made with SolidJS for a fast and fun developer experience.
 
-Tauri is used to amke the app cross platform.
+Tauri is used to make the app cross platform.
 
 The web front runs inside a webview which can be compiled to almost any OS.
