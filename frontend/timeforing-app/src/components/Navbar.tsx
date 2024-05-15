@@ -2,7 +2,7 @@ import { createEffect, type Component } from "solid-js";
 import { useNavigate } from "@solidjs/router";
 
 import styles from "./Navbar.module.css";
-import { appState, page, setAppState } from "../state/store";
+import { appState, page, setAppState } from "../store/store";
 
 const Navbar: Component = () => {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const Navbar: Component = () => {
           navigate("/profile");
           break;
         default:
-          navigate("week-view");
+          navigate("/week-view");
           break;
       }
     }

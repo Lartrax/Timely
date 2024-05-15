@@ -7,7 +7,7 @@ import {
   getWeekOrCreateNew,
   setAppState,
   WorkDay,
-} from "../../state/store";
+} from "../../store/store";
 import Button from "../../components/Button";
 import InputField from "../../components/InputField";
 

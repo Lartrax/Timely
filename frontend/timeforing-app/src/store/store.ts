@@ -184,8 +184,7 @@ export const [appState, setAppState] = createStore<store>({
   timer: 0,
 });
 
-
-let timer = 0;
+let timer: NodeJS.Timeout;
 
 export const startTimer = () => {
   timer = setInterval(() => {

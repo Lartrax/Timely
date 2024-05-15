@@ -1,7 +1,7 @@
 import { createEffect, createSignal, For, type Component } from "solid-js";
 
 import styles from "./Profile.module.css";
-import { appState, days, setAppState } from "../../state/store";
+import { appState, days, setAppState } from "../../store/store";
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
 
