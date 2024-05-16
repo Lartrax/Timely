@@ -2,7 +2,7 @@ import { createSignal, For, type Component } from "solid-js";
 
 import styles from "./Dropper.module.css";
 import InputField from "./InputField";
-import { appState, HourCode, WorkDay } from "../state/store";
+import { appState, HourCode, WorkDay } from "../store/store";
 import IconButton from "./IconButton";
 
 type dropperProps = {

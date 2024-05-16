@@ -44,7 +44,7 @@ export type Preferences = {
 };
 
 type store = {
-  user: user | null;
+  user: user | undefined;
   page: page;
   preferences: Preferences;
   activeWorkWeek: ActiveWorkWeek;
@@ -53,10 +53,31 @@ type store = {
 
 const today = new Date();
 
-export const getPreferences = async (
-  forceUser?: user
-): Promise<Preferences> => {
-  const userId = forceUser?.user_id || appState.user?.user_id;
+export const initializeUser = async () => {
+  const user = appState.user;
+  if (user) {
+    const today = new Date();
+    setAppState({
+      activeWorkWeek: await getWeekOrCreateNew(
+        getWeek(today),
+        getYear(today),
+        user
+      ),
+    });
+
+    setAppState({ preferences: await getPreferences() });
+
+    fetch(
+      `https://database.larserik.space/user/${user.user_id}/${user.name}/${user.email}`,
+      {
+        method: "POST",
+      }
+    );
+  }
+};
+
+export const getPreferences = async (): Promise<Preferences> => {
+  const userId = appState.user?.user_id;
 
   const defaultPrefs: Preferences = {
     start_end_time: [
@@ -162,7 +183,7 @@ export const getWeekOrCreateNew = async (
 };
 
 export const [appState, setAppState] = createStore<store>({
-  user: null,
+  user: undefined,
   page: page.weekView,
   preferences: {
     start_end_time: [
@@ -184,8 +205,7 @@ export const [appState, setAppState] = createStore<store>({
   timer: 0,
 });
 
-
-let timer = 0;
+let timer: NodeJS.Timeout;
 
 export const startTimer = () => {
   timer = setInterval(() => {

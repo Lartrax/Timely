@@ -1,7 +1,7 @@
 import { For, type Component } from "solid-js";
 
 import styles from "./Export.module.css";
-import { appState } from "../../state/store";
+import { appState } from "../../store/store";
 
 const Export: Component = () => {
   return (

@@ -6,7 +6,7 @@ import "./index.css";
 import Login from "./pages/Login/Login";
 import Navbar from "./components/Navbar";
 import Profile from "./pages/Profile/Profile";
-import { appState } from "./state/store";
+import { appState } from "./store/store";
 import WeekView from "./pages/WeekView/WeekView";
 import WorkTimer from "./pages/WorkTimer/WorkTimer";
 import Export from "./pages/Export/Export";

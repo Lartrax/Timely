@@ -1,7 +1,7 @@
 import { createSignal, For, onMount, type Component } from "solid-js";
 
 import styles from "./Archive.module.css";
-import { appState } from "../../state/store";
+import { appState } from "../../store/store";
 
 type WeekYear = {
   week_year: string;

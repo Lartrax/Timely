@@ -21,7 +21,7 @@ async fn create_user(path: web::types::Path<(String, String, String)>) -> impl w
         Ok(_) => connection.unwrap(),
         Err(e) => {
             return web::HttpResponse::BadRequest()
-                .body(format!("Unable to connoct to database: {e}"))
+                .body(format!("Unable to connect to database: {e}"))
         }
     };
 
@@ -88,7 +88,7 @@ async fn save_work_week(
         Ok(_) => connection.unwrap(),
         Err(e) => {
             return web::HttpResponse::BadRequest()
-                .body(format!("Unable to connoct to database: {e}"))
+                .body(format!("Unable to connect to database: {e}"))
         }
     };
 
@@ -135,7 +135,7 @@ async fn get_work_week(path: web::types::Path<(String, String, String)>) -> impl
         Ok(_) => connection.unwrap(),
         Err(e) => {
             return web::HttpResponse::BadRequest()
-                .body(format!("Unable to connoct to database: {e}"))
+                .body(format!("Unable to connect to database: {e}"))
         }
     };
 
@@ -169,7 +169,7 @@ async fn get_all_work_weeks(path: web::types::Path<String>) -> impl web::Respond
         Ok(_) => connection.unwrap(),
         Err(e) => {
             return web::HttpResponse::BadRequest()
-                .body(format!("Unable to connoct to database: {e}"))
+                .body(format!("Unable to connect to database: {e}"))
         }
     };
 
@@ -209,7 +209,7 @@ async fn get_preferences(path: web::types::Path<String>) -> impl web::Responder 
         Ok(_) => connection.unwrap(),
         Err(e) => {
             return web::HttpResponse::BadRequest()
-                .body(format!("Unable to connoct to database: {e}"))
+                .body(format!("Unable to connect to database: {e}"))
         }
     };
 
@@ -240,7 +240,7 @@ async fn update_preferences(
         Ok(_) => connection.unwrap(),
         Err(e) => {
             return web::HttpResponse::BadRequest()
-                .body(format!("Unable to connoct to database: {e}"))
+                .body(format!("Unable to connect to database: {e}"))
         }
     };
 
@@ -265,7 +265,7 @@ async fn update_preferences(
     let query = sqlx::query(&format!(
         "insert into preferences (start_end_time , time_codes, user_id)
         values   
-        ('{str_start_end_time}', '{str_time_codes}', {user_id})
+        ('{str_start_end_time}', '{str_time_codes}', '{user_id}')
         on conflict (user_id)
         do update set 
             start_end_time = '{str_start_end_time}', 

@@ -15,7 +15,7 @@ import {
   setAppState,
   startTimer,
   stopTimer,
-} from "../../state/store";
+} from "../../store/store";
 import { getDay, getWeek, getYear } from "date-fns";
 import IconButton from "../../components/IconButton";
 
