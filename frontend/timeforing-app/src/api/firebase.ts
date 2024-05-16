@@ -11,6 +11,7 @@ import {
 
 import { setAppState, type user } from "../store/store";
 import guestIcon from "../assets/guest_icon.webp";
+import { initializeUser } from "../store/store";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -38,7 +39,7 @@ auth.useDeviceLanguage();
 
 export function signInGoogle() {
   signInWithPopup(auth, provider)
-    .then((result) => {
+    .then(async (result) => {
       // // This gives you a Google Access Token. You can use it to access the Google API.
       // const credential = GoogleAuthProvider.credentialFromResult(result);
       // const token = credential?.accessToken;
@@ -55,6 +56,7 @@ export function signInGoogle() {
           profile_picture: user.photoURL,
         },
       });
+      await initializeUser();
     })
     .catch((error) => {
       // Handle Errors here.
@@ -71,7 +73,7 @@ export function signInGoogle() {
 
 export function signInGuest() {
   signInAnonymously(auth)
-    .then((result) => {
+    .then(async (result) => {
       // The signed-in user info.
       const user = result.user;
       // IdP data available using getAdditionalUserInfo(result)
@@ -84,6 +86,7 @@ export function signInGuest() {
           profile_picture: guestIcon,
         },
       });
+      await initializeUser();
     })
     .catch((error) => {
       // Handle Errors here.
