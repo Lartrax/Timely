@@ -5,19 +5,19 @@
 Install dependencies:
 
 ```
-npm i
+bun i
 ```
 
 Start dev server:
 
 ```
-cargo tauri dev
+bun run tauri dev
 ```
 
 Building for production
 
 ```
-cargo tauri (android/ios) build
+bun run tauri (android/ios) build
 ```
 
 The output wil be located in
