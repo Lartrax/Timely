@@ -1,5 +1,5 @@
 import { createEffect, type Component } from "solid-js";
-import { signInGoogle } from "../../api/firebase";
+import { signInGoogle, signInGuest } from "../../api/firebase";
 
 import styles from "./Login.module.css";
 import Button from "../../components/Button";
@@ -52,6 +52,11 @@ const Login: Component = () => {
           </>
         }
         onClick={signInGoogle}
+      />
+      <Button
+        style={{ width: "20vmax" }}
+        text="Login as guest"
+        onClick={signInGuest}
       />
     </div>
   );

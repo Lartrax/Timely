@@ -2,8 +2,15 @@
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
-import { appState, setAppState, type user } from "../store/store";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  signInAnonymously,
+  signInWithPopup,
+} from "firebase/auth";
+
+import { setAppState, type user } from "../store/store";
+import guestIcon from "../assets/guest_icon.webp";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -32,20 +39,49 @@ auth.useDeviceLanguage();
 export function signInGoogle() {
   signInWithPopup(auth, provider)
     .then((result) => {
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential?.accessToken;
+      // // This gives you a Google Access Token. You can use it to access the Google API.
+      // const credential = GoogleAuthProvider.credentialFromResult(result);
+      // const token = credential?.accessToken;
+
       // The signed-in user info.
       const user = result.user;
       // IdP data available using getAdditionalUserInfo(result)
       // ...
-      console.log(token, user.uid);
       setAppState({
         user: <user>{
           user_id: user.uid,
           name: user.displayName,
           email: user.email,
           profile_picture: user.photoURL,
+        },
+      });
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
+      console.log(errorCode, errorMessage, email, credential);
+    });
+}
+
+export function signInGuest() {
+  signInAnonymously(auth)
+    .then((result) => {
+      // The signed-in user info.
+      const user = result.user;
+      // IdP data available using getAdditionalUserInfo(result)
+      // ...
+      setAppState({
+        user: <user>{
+          user_id: user.uid,
+          name: "guest",
+          email: "none",
+          profile_picture: guestIcon,
         },
       });
     })
