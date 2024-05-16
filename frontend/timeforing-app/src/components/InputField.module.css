@@ -1,12 +1,11 @@
 .input {
   width: 100%;
   align-self: center;
-  border: none;
   border-radius: 0.5em;
   padding: 1rem;
   font-size: 1em;
   background: #fafafa;
-  border: #eee solid 1px;
+  border: #eee solid 2px;
 }
 
 .input:focus {

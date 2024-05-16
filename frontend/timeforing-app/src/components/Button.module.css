@@ -37,7 +37,7 @@
       var(--contrast) var(--p3),
       #fff var(--p4));
   transition: --contrast 200ms, --p1 100ms, --p2 100ms, --p3 100ms, --p4 100ms;
-  border: #f5f5f5 1px solid;
+  border: #f5f5f5 2px solid;
   text-decoration: none;
   color: #222;
 

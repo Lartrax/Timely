@@ -4,6 +4,7 @@ import styles from "./Profile.module.css";
 import { appState, days, setAppState } from "../../store/store";
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
+import IconButton from "../../components/IconButton";
 
 const Profile: Component = () => {
   const [startEndTimes, setStartEndTimes] = createSignal(
@@ -174,19 +175,28 @@ const Profile: Component = () => {
         >
           <For each={timeCodes()}>
             {(timeCode, i) => (
-              <InputField
-                style={{ width: "26vmax" }}
-                type="text"
-                value={timeCode}
-                onBlur={(e) =>
-                  setTimeCodes([
-                    ...timeCodes().map((code, j) =>
-                      i() === j ? e.target.value : code
-                    ),
-                  ])
-                }
-                placeholder="Workorder"
-              />
+              <span style={{ display: "flex", gap: "0.5em" }}>
+                <InputField
+                  style={{ width: "26vmax" }}
+                  type="text"
+                  value={timeCode}
+                  onBlur={(e) =>
+                    setTimeCodes([
+                      ...timeCodes().map((code, j) =>
+                        i() === j ? e.target.value : code
+                      ),
+                    ])
+                  }
+                  placeholder="Workorder"
+                />
+                <IconButton
+                  style={{ "font-size": "1em" }}
+                  icon="❌"
+                  onClick={() =>
+                    setTimeCodes([...timeCodes().filter((_, j) => j !== i())])
+                  }
+                />
+              </span>
             )}
           </For>
         </div>

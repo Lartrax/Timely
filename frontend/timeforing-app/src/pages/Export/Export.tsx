@@ -21,7 +21,7 @@ const Export: Component = () => {
           display: "flex",
           "flex-direction": "column",
           gap: "1em",
-          border: "1px solid #eee",
+          border: "2px solid #eee",
           "border-radius": "1em",
           padding: "1em",
         }}

@@ -154,7 +154,7 @@ const WorkTimer: Component = () => {
             display: "flex",
             "flex-direction": "column",
             padding: "1em",
-            border: "1px solid #eee",
+            border: "2px solid #eee",
             "border-radius": "1em",
             gap: "0.5em",
           }}
