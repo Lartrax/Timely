@@ -15,12 +15,12 @@ import { initializeUser } from "../store/store";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "***REMOVED***",
-  authDomain: "***REMOVED***",
-  projectId: "***REMOVED***",
-  storageBucket: "***REMOVED***.appspot.com",
-  messagingSenderId: "***REMOVED***",
-  appId: "1:***REMOVED***:web:cf6de4e3ba34603b2741aa",
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
 };
 
 // Initialize Firebase

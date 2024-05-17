@@ -7,7 +7,7 @@ async fn connect_pool() -> Result<Pool<Postgres>, Error> {
     PgPoolOptions::new()
         .max_connections(5)
         // TODO: Move url to .env
-        .connect("***REMOVED***")
+        .connect("")
         .await
 }
 

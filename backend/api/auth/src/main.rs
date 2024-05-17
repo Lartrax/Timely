@@ -17,10 +17,10 @@ struct RedirectResponse {
 #[web::get("/generate_redirect/{redirect_url}")]
 async fn generate_redirect(path: web::types::Path<String>) -> impl web::Responder {
     let client_id = ClientId::new(
-        "***REMOVED***".to_owned(),
+        "".to_owned(),
     );
 
-    let client_secret = ClientSecret::new("***REMOVED***".to_owned());
+    let client_secret = ClientSecret::new("".to_owned());
 
     let auth_url = AuthUrl::new("https://accounts.google.com/o/oauth2/v2/auth".to_owned())
         .expect("Invalid authorization endpoint URL");
